@@ -1,0 +1,91 @@
+/* Background with Animated Gradient */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(120deg, #1e3c72, #2a5298);
+    animation: gradientAnimation 6s infinite alternate;
+}
+
+/* Gradient Animation */
+@keyframes gradientAnimation {
+    0% {
+        background: linear-gradient(120deg, #1e3c72, #2a5298);
+    }
+    100% {
+        background: linear-gradient(120deg, #2a5298, #4a90e2);
+    }
+}
+
+/* Dashboard Container */
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 500px;
+    animation: fadeIn 1.2s ease-in-out;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Heading */
+h2 {
+    color: #1e3c72;
+    font-size: 26px;
+}
+
+/* Course List */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background: linear-gradient(45deg, #1e3c72, #2a5298);
+    color: white;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Hover Effect on Courses */
+li:hover {
+    transform: scale(1.05);
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 18px;
+    color: white;
+    background: linear-gradient(45deg, #2a5298, #4a90e2);
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    margin-top: 10px;
+}
+
+/* Button Hover Effect */
+.btn:hover {
+    background: linear-gradient(45deg, #4a90e2, #2a5298);
+    transform: scale(1.05);
+}

@@ -1,0 +1,133 @@
+/* Background with Animated Dark Gradient */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(120deg, #141E30, #243B55);
+    animation: gradientAnimation 6s infinite alternate;
+}
+
+/* Gradient Animation */
+@keyframes gradientAnimation {
+    0% {
+        background: linear-gradient(120deg, #141E30, #243B55);
+    }
+    100% {
+        background: linear-gradient(120deg, #243B55, #141E30);
+    }
+}
+
+/* Manage Students Container */
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 700px;
+    animation: fadeIn 1.2s ease-in-out;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Heading */
+h2 {
+    color: #141E30;
+    font-size: 26px;
+}
+
+/* Student List */
+.student-list {
+    list-style: none;
+    padding: 0;
+}
+
+.student-list li {
+    background: linear-gradient(45deg, #243B55, #141E30);
+    color: white;
+    padding: 14px;
+    margin: 12px 0;
+    border-radius: 8px;
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Hover Effect on Students */
+.student-list li:hover {
+    transform: scale(1.05);
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 10px 18px;
+    font-size: 16px;
+    color: white;
+    background: linear-gradient(45deg, #243B55, #141E30);
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+/* Button Hover Effect */
+.btn:hover {
+    background: linear-gradient(45deg, #141E30, #243B55);
+    transform: scale(1.05);
+}
+
+/* Forms */
+form {
+    margin-top: 20px;
+    text-align: left;
+}
+
+label {
+    font-weight: bold;
+    color: #141E30;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* Submit Button */
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    color: white;
+    background: linear-gradient(45deg, #243B55, #141E30);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Submit Button Hover */
+.submit-btn:hover {
+    background: linear-gradient(45deg, #141E30, #243B55);
+    transform: scale(1.05);
+}
+

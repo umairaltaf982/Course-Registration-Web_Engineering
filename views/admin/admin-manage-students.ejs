@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Students</title>
+    <link rel="stylesheet" href="/css/admin/admin-manage-students.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Manage Student Registrations</h2>
+
+        <h3>Student List</h3>
+        <ul>
+            <% students.forEach(student => { %>
+                <li>
+                    <strong><%= student.name %> (Roll No: <%= student.rollNumber %>)</strong>
+                    <ul>
+                        <% if (student.courses.length > 0) { %>
+                            <% student.courses.forEach(course => { %>
+                                <li>
+                                    <%= course.name %> (<%= course.code %>)
+                                    <form action="/api/admins/students/remove" method="POST" style="display:inline;">
+                                        <input type="hidden" name="studentId" value="<%= student._id %>">
+                                        <input type="hidden" name="courseId" value="<%= course._id %>">
+                                        <button type="submit">Remove</button>
+                                    </form>
+                                </li>
+                            <% }) %>
+                        <% } else { %>
+                            <p>No courses registered.</p>
+                        <% } %>
+                    </ul>
+                </li>
+            <% }) %>
+        </ul>
+
+        <a href="/admin/dashboard" class="btn">Back to Dashboard</a>
+    </div>
+</body>
+</html>

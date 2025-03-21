@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Reports</title>
+    <link rel="stylesheet" href="/css/admin/admin-reports.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Reports</h2>
+
+        <!-- Report: Students Registered in a Course -->
+        <h3>Students Registered Per Course</h3>
+        <ul>
+            <% courses.forEach(course => { %>
+                <li>
+                    <strong><%= course.name %> (<%= course.code %>)</strong> -  
+                    Registered Students: <%= course.registeredStudents.length %>
+                </li>
+            <% }) %>
+        </ul>
+
+        <!-- Report: Courses with Available Seats -->
+        <h3>Courses with Available Seats</h3>
+        <ul>
+            <% courses.filter(course => course.seatsAvailable > 0).forEach(course => { %>
+                <li>
+                    <strong><%= course.name %> (<%= course.code %>)</strong> -  
+                    Seats Left: <%= course.seatsAvailable %>
+                </li>
+            <% }) %>
+        </ul>
+
+        <!-- Report: Students Missing Prerequisites -->
+        <h3>Students Missing Prerequisites</h3>
+        <ul>
+            <% students.filter(student => student.missingPrerequisites.length > 0).forEach(student => { %>
+                <li>
+                    <strong><%= student.name %> (Roll No: <%= student.rollNumber %>)</strong>
+                    <ul>
+                        <% student.missingPrerequisites.forEach(prereq => { %>
+                            <li><%= prereq.name %> (<%= prereq.code %>)</li>
+                        <% }) %>
+                    </ul>
+                </li>
+            <% }) %>
+        </ul>
+
+        <a href="/admin/dashboard" class="btn">Back to Dashboard</a>
+    </div>
+</body>
+</html>

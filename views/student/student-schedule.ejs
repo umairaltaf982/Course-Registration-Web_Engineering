@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Weekly Schedule</title>
+    <link rel="stylesheet" href="/css/student/student-schedule.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Your Weekly Schedule</h2>
+
+        <table>
+            <tr>
+                <th>Time Slot</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+            </tr>
+
+            <% for (let i = 8; i <= 17; i++) { %> <!-- 8 AM to 5 PM -->
+                <tr>
+                    <td><%= i %>:00 - <%= i + 1 %>:00</td>
+                    <% for (let j = 0; j < 5; j++) { %> <!-- Monday to Friday -->
+                        <td>
+                            <% let conflict = false; %>
+                            <% student.courses.forEach(course => { %>
+                                <% if (course.schedule.day === j && course.schedule.startTime === i) { %>
+                                    <div class="course <%= conflict ? 'conflict' : '' %>">
+                                        <%= course.name %> (<%= course.code %>)
+                                    </div>
+                                    <% conflict = true; %>
+                                <% } %>
+                            <% }) %>
+                        </td>
+                    <% } %>
+                </tr>
+            <% } %>
+        </table>
+
+        <a href="/student/dashboard" class="btn">Back to Dashboard</a>
+    </div>
+</body>
+</html>

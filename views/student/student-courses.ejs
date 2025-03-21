@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Courses</title>
+    <link rel="stylesheet" href="/css/student/student-courses.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Available Courses</h2>
+
+        <!-- Filtering Options -->
+        <label for="filter">Filter by:</label>
+        <select id="filter">
+            <option value="all">All</option>
+            <option value="department">Department</option>
+            <option value="level">Course Level</option>
+            <option value="time">Time of Day</option>
+            <option value="days">Days of the Week</option>
+            <option value="seats">Open Seats</option>
+        </select>
+
+        <ul id="course-list">
+            <% courses.forEach(course => { %>
+                <li>
+                    <strong><%= course.name %> (<%= course.code %>)</strong> -  
+                    Seats Available: <%= course.seatsAvailable %>
+                    <form action="/api/students/register" method="POST">
+                        <input type="hidden" name="courseId" value="<%= course._id %>">
+                        <button type="submit" <%= course.seatsAvailable === 0 ? 'disabled' : '' %>>
+                            Register
+                        </button>
+                    </form>
+                </li>
+            <% }) %>
+        </ul>
+
+        <a href="/student/dashboard" class="btn">Back to Dashboard</a>
+    </div>
+</body>
+</html>
