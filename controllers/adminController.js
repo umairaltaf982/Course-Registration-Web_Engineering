@@ -2,28 +2,40 @@ const Admin = require('../models/Admin');
 const Course = require('../models/Course');
 const Student = require('../models/Student');
 
-const Admin = require('../models/Admin');
-
 // Admin Login
 exports.loginAdmin = async (req, res) => {
     const { username, password } = req.body;
     try {
-        const admin = await Admin.findOne({ username });
+        const admin = await Admin.findOne({ username, password });
         if (!admin) {
-            return res.status(401).json({ message: 'Invalid Credentials' });
+            return res.status(401).json({ message: 'Invalid credentials' });
         }
-
-        // Compare hashed password
-        const isMatch = await Admin.comparePassword(password);
-        if (!isMatch) {
-            return res.status(401).json({ message: 'Invalid Credentials' });
-        }
-
-        res.json({ message: 'Admin login successful', admin });
+        res.render('admin/admin-dashboard');
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }
 };
+
+// // Admin Login
+// exports.loginAdmin = async (req, res) => {
+//     const { username, password } = req.body;
+//     try {
+//         const admin = await Admin.findOne({ username });
+//         if (!admin) {
+//             return res.status(401).json({ message: 'Invalid Credentials' });
+//         }
+
+//         // Compare hashed password
+//         const isMatch = await admin.comparePassword(password);
+//         if (!isMatch) {
+//             return res.status(401).json({ message: 'Invalid Credentials' });
+//         }
+
+//         res.json({ message: 'Admin login successful', admin });
+//     } catch (error) {
+//         res.status(500).json({ message: 'Server error', error });
+//     }
+// };
 
 // Add Course
 exports.addCourse = async (req, res) => {
