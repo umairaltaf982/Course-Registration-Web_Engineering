@@ -10,7 +10,6 @@
     <div class="container">
         <h2>Manage Courses</h2>
 
-        <!-- Add New Course Form -->
         <form action="/api/admins/courses" method="POST">
             <label for="name">Course Name:</label>
             <input type="text" id="name" name="name" required>
@@ -27,7 +26,6 @@
             <button type="submit">Add Course</button>
         </form>
 
-        <!-- List of Existing Courses -->
         <h3>Existing Courses</h3>
         <ul>
             <% courses.forEach(course => { %>

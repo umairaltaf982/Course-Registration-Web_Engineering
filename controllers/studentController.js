@@ -1,7 +1,6 @@
 const Student = require('../models/Student');
 const Course = require('../models/Course');
 
-// Student Login
 exports.loginStudent = async (req, res) => {
     const { rollNumber } = req.body;
     try {
@@ -9,13 +8,12 @@ exports.loginStudent = async (req, res) => {
         if (!student) {
             return res.status(404).json({ message: 'Student not found' });
         }
-        res.json({ message: 'Login successful', student });
+        res.render('student/student-dashboard');
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }
 };
 
-// Get Available Courses
 exports.getCourses = async (req, res) => {
     try {
         const courses = await Course.find({});
@@ -25,7 +23,6 @@ exports.getCourses = async (req, res) => {
     }
 };
 
-// Register for a Course
 exports.registerCourse = async (req, res) => {
     const { rollNumber, courseId } = req.body;
     try {
@@ -43,7 +40,6 @@ exports.registerCourse = async (req, res) => {
             return res.status(400).json({ message: 'No available seats' });
         }
 
-        // Add course to student
         student.courses.push(courseId);
         course.seatsAvailable -= 1;
         await student.save();

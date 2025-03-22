@@ -20,10 +20,10 @@
                 <th>Friday</th>
             </tr>
 
-            <% for (let i = 8; i <= 17; i++) { %> <!-- 8 AM to 5 PM -->
+            <% for (let i = 8; i <= 17; i++) { %>
                 <tr>
                     <td><%= i %>:00 - <%= i + 1 %>:00</td>
-                    <% for (let j = 0; j < 5; j++) { %> <!-- Monday to Friday -->
+                    <% for (let j = 0; j < 5; j++) { %> 
                         <td>
                             <% let conflict = false; %>
                             <% student.courses.forEach(course => { %>

@@ -2,7 +2,6 @@ const Admin = require('../models/Admin');
 const Course = require('../models/Course');
 const Student = require('../models/Student');
 
-// Admin Login
 exports.loginAdmin = async (req, res) => {
     const { username, password } = req.body;
     try {
@@ -16,7 +15,7 @@ exports.loginAdmin = async (req, res) => {
     }
 };
 
-// // Admin Login
+
 // exports.loginAdmin = async (req, res) => {
 //     const { username, password } = req.body;
 //     try {
@@ -37,7 +36,6 @@ exports.loginAdmin = async (req, res) => {
 //     }
 // };
 
-// Add Course
 exports.addCourse = async (req, res) => {
     const { name, code, seatsAvailable, prerequisites } = req.body;
     try {
@@ -49,7 +47,6 @@ exports.addCourse = async (req, res) => {
     }
 };
 
-// Delete Course
 exports.deleteCourse = async (req, res) => {
     try {
         await Course.findByIdAndDelete(req.params.id);
@@ -59,7 +56,6 @@ exports.deleteCourse = async (req, res) => {
     }
 };
 
-// Get All Students
 exports.getAllStudents = async (req, res) => {
     try {
         const students = await Student.find().populate('courses');

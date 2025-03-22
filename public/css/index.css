@@ -1,4 +1,3 @@
-/* Background with Animated Gradient */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -11,7 +10,6 @@ body {
     animation: gradientAnimation 5s infinite alternate;
 }
 
-/* Gradient Animation */
 @keyframes gradientAnimation {
     0% {
         background: linear-gradient(120deg, #ff9a9e, #fad0c4);
@@ -21,7 +19,6 @@ body {
     }
 }
 
-/* Container Styling */
 .container {
     text-align: center;
     background: rgba(255, 255, 255, 0.9);
@@ -31,7 +28,6 @@ body {
     animation: fadeIn 1.5s ease-in-out;
 }
 
-/* Fade-in Animation */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -43,14 +39,12 @@ body {
     }
 }
 
-/* Heading */
 h1 {
     color: #333;
     font-size: 28px;
     font-weight: bold;
 }
 
-/* Buttons */
 .btn {
     display: inline-block;
     padding: 12px 25px;
@@ -65,13 +59,11 @@ h1 {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Button Hover Effect */
 .btn:hover {
     background: linear-gradient(45deg, #ff7eb3, #ff758c);
     transform: scale(1.05);
 }
 
-/* Responsive Design */
 @media (max-width: 600px) {
     .container {
         width: 90%;

@@ -1,7 +1,6 @@
 const Student = require('../models/Student');
 const Admin = require('../models/Admin');
 
-// Middleware for student authentication
 exports.authenticateStudent = async (req, res, next) => {
     const { rollNumber } = req.body;
     try {
@@ -16,7 +15,6 @@ exports.authenticateStudent = async (req, res, next) => {
     }
 };
 
-// Middleware for admin authentication
 exports.authenticateAdmin = async (req, res, next) => {
     const { username, password } = req.body;
     try {

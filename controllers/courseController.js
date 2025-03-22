@@ -1,6 +1,5 @@
 const Course = require('../models/Course');
 
-// Get All Courses
 exports.getAllCourses = async (req, res) => {
     try {
         const courses = await Course.find({});
@@ -10,7 +9,6 @@ exports.getAllCourses = async (req, res) => {
     }
 };
 
-// Get Course By ID
 exports.getCourseById = async (req, res) => {
     try {
         const course = await Course.findById(req.params.id);
@@ -23,7 +21,6 @@ exports.getCourseById = async (req, res) => {
     }
 };
 
-// Update Course
 exports.updateCourse = async (req, res) => {
     try {
         const updatedCourse = await Course.findByIdAndUpdate(req.params.id, req.body, { new: true });

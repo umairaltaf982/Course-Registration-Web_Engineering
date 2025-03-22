@@ -6,8 +6,8 @@ const CourseSchema = new mongoose.Schema({
     seatsAvailable: { type: Number, required: true },
     prerequisites: [{ type: String }],
     schedule: {
-        day: { type: Number, required: true }, // 0 = Monday, 4 = Friday
-        startTime: { type: Number, required: true } // 8 = 8 AM, 17 = 5 PM
+        day: { type: Number, required: true },
+        startTime: { type: Number, required: true }
     }
 });
 
