@@ -1,0 +1,244 @@
+.ejs
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details | Admin</title>
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/admin/admin-manage-students.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+    
+    <div class="dashboard-container">
+        <header class="page-header">
+            <div class="header-content">
+                <h1>Student Details</h1>
+                <p>View and manage courses for <%= student.name %></p>
+            </div>
+            <div class="action-buttons">
+                <a href="/admin/edit-student/<%= student._id %>" class="btn primary-btn">
+                    <i class="fas fa-edit"></i> Edit Student
+                </a>
+                <a href="/admin/manage-students" class="btn secondary-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Students
+                </a>
+            </div>
+        </header>
+        
+        <% if (error) { %>
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle"></i> <%= error %>
+                <button class="close-alert">&times;</button>
+            </div>
+        <% } %>
+        
+        <% if (success) { %>
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i> <%= success %>
+                <button class="close-alert">&times;</button>
+            </div>
+        <% } %>
+        
+        <div class="student-profile-grid">
+            <div class="student-card detail-card">
+                <div class="student-header">
+                    <div class="student-avatar large">
+                        <%= student.name.charAt(0) %>
+                    </div>
+                    <div class="student-info">
+                        <h2 class="student-name"><%= student.name %></h2>
+                        <span class="student-roll"><%= student.rollNumber %></span>
+                    </div>
+                </div>
+                
+                <div class="student-details">
+                    <div class="detail-item">
+                        <i class="fas fa-envelope"></i>
+                        <span><%= student.email %></span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span><%= student.department %></span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Semester <%= student.semester %></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="course-management-panel">
+                <div class="panel-section">
+                    <h3><i class="fas fa-book"></i> Registered Courses</h3>
+                    
+                    <% if (student.courses && student.courses.length > 0) { %>
+                        <ul class="course-list">
+                            <% student.courses.forEach(course => { %>
+                                <li class="course-item">
+                                    <div class="course-details expanded">
+                                        <span class="course-code"><%= course.code %></span>
+                                        <span class="course-name"><%= course.name %></span>
+                                        <div class="course-extra-details">
+                                            <span><i class="fas fa-clock"></i> <%= ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'][course.schedule.day] %>, 
+                                            <%= course.schedule.startTime %>:00 - <%= course.schedule.startTime + 1 %>:00</span>
+                                            <span><i class="fas fa-bookmark"></i> <%= course.creditHours %> Credits</span>
+                                        </div>
+                                    </div>
+                                    <form action="/api/students/<%= student._id %>/remove-course" method="POST" class="remove-course-form">
+                                        <input type="hidden" name="courseId" value="<%= course._id %>">
+                                        <button type="submit" class="remove-btn danger" title="Remove Course">
+                                            <i class="fas fa-trash"></i> Remove
+                                        </button>
+                                    </form>
+                                </li>
+                            <% }) %>
+                        </ul>
+                    <% } else { %>
+                        <div class="empty-courses">
+                            <i class="fas fa-info-circle"></i>
+                            <p>No courses registered</p>
+                        </div>
+                    <% } %>
+                </div>
+                
+                <div class="panel-section">
+                    <h3><i class="fas fa-plus-circle"></i> Add Course</h3>
+                    
+                    <form action="/api/students/<%= student._id %>/add-course" method="POST" class="add-course-form">
+                        <div class="form-group">
+                            <label for="courseId">Select Course:</label>
+                            <select id="courseId" name="courseId" required>
+                                <option value="">-- Select a course --</option>
+                                <% availableCourses.forEach(course => { %>
+                                    <option value="<%= course._id %>">
+                                        <%= course.name %> (<%= course.code %>) - 
+                                        <%= ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'][course.schedule.day] %> <%= course.schedule.startTime %>:00
+                                        - Seats: <%= course.seatsAvailable %>/<%= course.totalSeats %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn primary-btn">
+                            <i class="fas fa-plus"></i> Add Course
+                        </button>
+                    </form>
+                </div>
+                
+                <% if (student.completedCourses && student.completedCourses.length > 0) { %>
+                    <div class="panel-section">
+                        <h3><i class="fas fa-check-circle"></i> Completed Courses</h3>
+                        
+                        <ul class="course-list completed">
+                            <% student.completedCourses.forEach(course => { %>
+                                <li class="course-item">
+                                    <div class="course-details">
+                                        <span class="course-code"><%= course.code %></span>
+                                        <span class="course-name"><%= course.name %></span>
+                                    </div>
+                                </li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Confirm Action</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to remove this course from the student's schedule?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-action" class="btn secondary-btn">Cancel</button>
+                <button id="confirm-action" class="btn danger-btn">Remove Course</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up confirmation modal for course removal
+            const removeForms = document.querySelectorAll('.remove-course-form');
+            const confirmationModal = document.getElementById('confirmation-modal');
+            const confirmActionBtn = document.getElementById('confirm-action');
+            const cancelActionBtn = document.getElementById('cancel-action');
+            const closeModalBtn = document.querySelector('.close-modal');
+            const alertCloseButtons = document.querySelectorAll('.close-alert');
+            
+            let activeForm = null;
+            
+            // Remove course confirmation
+            removeForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    activeForm = this;
+                    showModal();
+                });
+            });
+            
+            // Close alerts
+            if (alertCloseButtons) {
+                alertCloseButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        this.closest('.alert').style.display = 'none';
+                    });
+                });
+            }
+            
+            // Modal event listeners
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', hideModal);
+            }
+            
+            if (cancelActionBtn) {
+                cancelActionBtn.addEventListener('click', hideModal);
+            }
+            
+            if (confirmActionBtn) {
+                confirmActionBtn.addEventListener('click', confirmRemoveCourse);
+            }
+            
+            // Click outside to close modal
+            window.addEventListener('click', function(e) {
+                if (e.target === confirmationModal) {
+                    hideModal();
+                }
+            });
+            
+            function showModal() {
+                if (confirmationModal) {
+                    confirmationModal.style.display = 'flex';
+                }
+            }
+            
+            function hideModal() {
+                if (confirmationModal) {
+                    confirmationModal.style.display = 'none';
+                    activeForm = null;
+                }
+            }
+            
+            function confirmRemoveCourse() {
+                if (activeForm) {
+                    // Add loading state to button
+                    confirmActionBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Removing...';
+                    confirmActionBtn.disabled = true;
+                    
+                    // Submit the form
+                    activeForm.submit();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

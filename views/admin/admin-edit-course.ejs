@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Course | Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/admin/admin-manage-courses.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <%- include('../partials/admin-navbar') %>
+
+    <div class="dashboard-container">
+        <div class="page-header">
+            <div class="header-content">
+                <h1>Edit Course</h1>
+                <p>Update course details and prerequisites</p>
+            </div>
+            <div class="header-actions">
+                <a href="/admin/manage-courses" class="btn secondary-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Courses
+                </a>
+            </div>
+        </div>
+        
+        <% if (error) { %>
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle"></i> <%= error %>
+                <button class="close-alert">&times;</button>
+            </div>
+        <% } %>
+        
+        <div class="form-panel" style="width: 100%; max-width: 800px; margin: 0 auto;">
+            <div class="panel-header">
+                <h2><i class="fas fa-edit"></i> Edit <%= course.name %> (<%= course.code %>)</h2>
+            </div>
+            
+            <form id="edit-course-form" action="/api/courses/<%= course._id %>" method="POST" class="course-form">
+                <input type="hidden" name="_method" value="PUT">
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name">Course Name:</label>
+                        <input type="text" id="name" name="name" value="<%= course.name %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="code">Course Code:</label>
+                        <input type="text" id="code" name="code" value="<%= course.code %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="department">Department:</label>
+                        <input type="text" id="department" name="department" value="<%= course.department %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="level">Course Level:</label>
+                        <select id="level" name="level" required>
+                            <option value="100" <%= course.level === 100 ? 'selected' : '' %>>100 Level</option>
+                            <option value="200" <%= course.level === 200 ? 'selected' : '' %>>200 Level</option>
+                            <option value="300" <%= course.level === 300 ? 'selected' : '' %>>300 Level</option>
+                            <option value="400" <%= course.level === 400 ? 'selected' : '' %>>400 Level</option>
+                            <option value="500" <%= course.level === 500 ? 'selected' : '' %>>500 Level</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="creditHours">Credit Hours:</label>
+                        <input type="number" id="creditHours" name="creditHours" min="1" max="6" value="<%= course.creditHours %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="totalSeats">Total Seats:</label>
+                        <input type="number" id="totalSeats" name="totalSeats" min="1" value="<%= course.totalSeats %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="day">Day of Week:</label>
+                        <select id="day" name="day" required>
+                            <option value="0" <%= course.schedule.day === 0 ? 'selected' : '' %>>Monday</option>
+                            <option value="1" <%= course.schedule.day === 1 ? 'selected' : '' %>>Tuesday</option>
+                            <option value="2" <%= course.schedule.day === 2 ? 'selected' : '' %>>Wednesday</option>
+                            <option value="3" <%= course.schedule.day === 3 ? 'selected' : '' %>>Thursday</option>
+                            <option value="4" <%= course.schedule.day === 4 ? 'selected' : '' %>>Friday</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="startTime">Start Time:</label>
+                        <select id="startTime" name="startTime" required>
+                            <% for (let i = 8; i <= 16; i++) { %>
+                                <option value="<%= i %>" <%= course.schedule.startTime === i ? 'selected' : '' %>><%= i %>:00</option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group prerequisites-section">
+                    <label>Prerequisites:</label>
+                    <div class="prerequisites-selectors">
+                        <select id="availablePrerequisites">
+                            <option value="">Select a prerequisite</option>
+                            <% allCourses.forEach(prereq => { %>
+                                <option value="<%= prereq._id %>"><%= prereq.name %> (<%= prereq.code %>)</option>
+                            <% }) %>
+                        </select>
+                        <button type="button" id="addPrerequisite" class="btn primary-btn">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                    
+                    <input type="hidden" id="prerequisites" name="prerequisites" value="<%= course.prerequisites.map(p => p._id).join(',') %>">
+                    
+                    <div class="prerequisites-list-container">
+                        <ul id="selectedPrerequisites" class="prerequisites-list">
+                            <% if (course.prerequisites.length === 0) { %>
+                                <li class="empty-prereqs">No prerequisites selected</li>
+                            <% } else { %>
+                                <% course.prerequisites.forEach(prereq => { %>
+                                    <li>
+                                        <%= prereq.name %> (<%= prereq.code %>)
+                                        <button type="button" class="remove-prereq" data-id="<%= prereq._id %>">
+                                            <i class="fas fa-times"></i> Remove
+                                        </button>
+                                    </li>
+                                <% }) %>
+                            <% } %>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="4"><%= course.description || '' %></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-save"></i> Update Course
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <script src="/js/admin/admin-edit-course.js"></script>
+</body>
+</html>

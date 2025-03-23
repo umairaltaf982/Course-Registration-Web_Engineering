@@ -1,0 +1,88 @@
+ejs
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Student | Admin</title>
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/admin/admin-manage-students.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <%- include('../partials/admin-navbar') %>
+
+    <div class="dashboard-container">
+        <header class="page-header">
+            <div class="header-content">
+                <h1>Edit Student</h1>
+                <p>Update student information</p>
+            </div>
+            <div class="action-buttons">
+                <a href="/admin/manage-students" class="btn secondary-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Students
+                </a>
+            </div>
+        </header>
+
+        <% if (error) { %>
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle"></i> <%= error %>
+                <button class="close-alert">&times;</button>
+            </div>
+        <% } %>
+        
+        <div class="form-panel">
+            <div class="panel-header">
+                <h2><i class="fas fa-user-edit"></i> Edit <%= student.name %></h2>
+            </div>
+            
+            <form action="/api/students/<%= student._id %>" method="POST" class="edit-form">
+                <input type="hidden" name="_method" value="PUT">
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name">Full Name:</label>
+                        <input type="text" id="name" name="name" value="<%= student.name %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="rollNumber">Roll Number:</label>
+                        <input type="text" id="rollNumber" name="rollNumber" value="<%= student.rollNumber %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" value="<%= student.email %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="department">Department:</label>
+                        <select id="department" name="department" required>
+                            <option value="Computer Science" <%= student.department === 'Computer Science' ? 'selected' : '' %>>Computer Science</option>
+                            <option value="Mathematics" <%= student.department === 'Mathematics' ? 'selected' : '' %>>Mathematics</option>
+                            <option value="Physics" <%= student.department === 'Physics' ? 'selected' : '' %>>Physics</option>
+                            <option value="English" <%= student.department === 'English' ? 'selected' : '' %>>English</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="semester">Semester:</label>
+                        <select id="semester" name="semester" required>
+                            <% for(let i = 1; i <= 8; i++) { %>
+                                <option value="<%= i %>" <%= student.semester === i ? 'selected' : '' %>>Semester <%= i %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn primary-btn submit-btn">
+                    <i class="fas fa-save"></i> Update Student
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <script src="/js/admin/admin-edit-student.js"></script>
+</body>
+</html>

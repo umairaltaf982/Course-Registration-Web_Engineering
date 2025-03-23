@@ -3,48 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Courses</title>
+    <title>Manage Courses | Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/admin/admin-manage-courses.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h2>Manage Courses</h2>
+    <%- include('../partials/admin-navbar') %>
 
-        <form action="/api/admins/courses" method="POST">
-            <label for="name">Course Name:</label>
-            <input type="text" id="name" name="name" required>
+    <div class="dashboard-container">
+        <div class="page-header">
+            <div class="header-content">
+                <h1>Course Management</h1>
+                <p>Add, edit, or remove courses from the system</p>
+            </div>
+            <div class="header-actions">
+                <a href="/admin/dashboard" class="btn secondary-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+        
+        <% if (error) { %>
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle"></i> <%= error %>
+                <button class="close-alert">&times;</button>
+            </div>
+        <% } %>
+        
+        <% if (success) { %>
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i> <%= success %>
+                <button class="close-alert">&times;</button>
+            </div>
+        <% } %>
 
-            <label for="code">Course Code:</label>
-            <input type="text" id="code" name="code" required>
+        <div class="content-grid">
+            <div class="form-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-plus-circle"></i> Add New Course</h2>
+                </div>
+                
+                <form action="/api/courses" method="POST" class="course-form" id="add-course-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name">Course Name:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="code">Course Code:</label>
+                            <input type="text" id="code" name="code" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="department">Department:</label>
+                            <input type="text" id="department" name="department" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="level">Course Level:</label>
+                            <select id="level" name="level" required>
+                                <option value="100">100 Level</option>
+                                <option value="200">200 Level</option>
+                                <option value="300">300 Level</option>
+                                <option value="400">400 Level</option>
+                                <option value="500">500 Level</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="creditHours">Credit Hours:</label>
+                            <input type="number" id="creditHours" name="creditHours" min="1" max="6" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="totalSeats">Total Seats:</label>
+                            <input type="number" id="totalSeats" name="totalSeats" min="1" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="day">Day of Week:</label>
+                            <select id="day" name="day" required>
+                                <option value="0">Monday</option>
+                                <option value="1">Tuesday</option>
+                                <option value="2">Wednesday</option>
+                                <option value="3">Thursday</option>
+                                <option value="4">Friday</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="startTime">Start Time:</label>
+                            <select id="startTime" name="startTime" required>
+                                <% for (let i = 8; i <= 16; i++) { %>
+                                    <option value="<%= i %>"><%= i %>:00</option>
+                                <% } %>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group prerequisites-section">
+                        <label>Prerequisites:</label>
+                        <div class="prerequisites-selectors">
+                            <select id="availablePrerequisites">
+                                <option value="">Select a prerequisite</option>
+                                <% courses.forEach(course => { %>
+                                    <option value="<%= course._id %>"><%= course.name %> (<%= course.code %>)</option>
+                                <% }) %>
+                            </select>
+                            <button type="button" id="addPrerequisite" class="btn primary-btn">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                        <input type="hidden" id="prerequisites" name="prerequisites" value="">
+                        
+                        <div class="prerequisites-list-container">
+                            <ul id="selectedPrerequisites" class="prerequisites-list"></ul>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea id="description" name="description" rows="4"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-save"></i> Add Course
+                    </button>
+                </form>
+            </div>
 
-            <label for="seats">Available Seats:</label>
-            <input type="number" id="seats" name="seatsAvailable" required>
-
-            <label for="prerequisites">Prerequisites (Course IDs, comma-separated):</label>
-            <input type="text" id="prerequisites" name="prerequisites">
-
-            <button type="submit">Add Course</button>
-        </form>
-
-        <h3>Existing Courses</h3>
-        <ul>
-            <% courses.forEach(course => { %>
-                <li>
-                    <strong><%= course.name %> (<%= course.code %>)</strong> -  
-                    Seats Available: <%= course.seatsAvailable %>
-                    <form action="/api/admins/courses/<%= course._id %>" method="POST" style="display:inline;">
-                        <input type="hidden" name="_method" value="PUT">
-                        <button type="submit">Edit</button>
-                    </form>
-                    <form action="/api/admins/courses/<%= course._id %>" method="POST" style="display:inline;">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit">Delete</button>
-                    </form>
-                </li>
-            <% }) %>
-        </ul>
-
-        <a href="/admin/dashboard" class="btn">Back to Dashboard</a>
+            <div class="courses-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-book"></i> Existing Courses</h2>
+                    <div class="search-container">
+                        <input type="text" id="courseSearch" placeholder="Search courses...">
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                </div>
+                
+                <% if (courses.length === 0) { %>
+                    <div class="empty-state">
+                        <i class="fas fa-info-circle"></i>
+                        <p>No courses have been added yet</p>
+                    </div>
+                <% } else { %>
+                    <div class="course-grid" id="course-list">
+                        <% courses.forEach(course => { %>
+                            <div class="course-card" data-course-id="<%= course._id %>">
+                                <div class="course-header">
+                                    <h3><%= course.name %></h3>
+                                    <span class="course-code"><%= course.code %></span>
+                                </div>
+                                
+                                <div class="course-info">
+                                    <div class="info-item">
+                                        <i class="fas fa-university"></i>
+                                        <span><%= course.department %></span>
+                                    </div>
+                                    
+                                    <div class="info-item">
+                                        <i class="fas fa-users"></i>
+                                        <span>Seats: <%= course.seatsAvailable %> / <%= course.totalSeats %></span>
+                                    </div>
+                                    
+                                    <div class="info-item">
+                                        <i class="fas fa-clock"></i>
+                                        <span>
+                                            <%= ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'][course.schedule.day] %>, 
+                                            <%= course.schedule.startTime %>:00 - <%= course.schedule.startTime + 1 %>:00
+                                        </span>
+                                    </div>
+                                    
+                                    <div class="info-item">
+                                        <i class="fas fa-graduation-cap"></i>
+                                        <span><%= course.creditHours %> Credit Hours</span>
+                                    </div>
+                                    
+                                    <% if (course.prerequisites && course.prerequisites.length > 0) { %>
+                                        <div class="prerequisites-display">
+                                            <strong>Prerequisites:</strong>
+                                            <ul>
+                                                <% course.prerequisites.forEach(prereq => { %>
+                                                    <li><%= prereq.name %> (<%= prereq.code %>)</li>
+                                                <% }) %>
+                                            </ul>
+                                        </div>
+                                    <% } %>
+                                </div>
+                                
+                                <div class="course-actions">
+                                    <a href="/admin/edit-course/<%= course._id %>" class="btn edit-btn">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <button class="btn delete-btn" data-course-id="<%= course._id %>">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </button>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } %>
+            </div>
+        </div>
     </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Confirm Deletion</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this course? This action cannot be undone.</p>
+                <p class="course-name-display">Course: <span id="courseToDelete"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelDelete" class="btn secondary-btn">Cancel</button>
+                <button id="confirmDelete" class="btn delete-btn">Delete Course</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/js/admin/admin-manage-courses.js"></script>
 </body>
 </html>

@@ -1,0 +1,62 @@
+/* Admin Navbar Styles */
+.admin-nav {
+    background: linear-gradient(90deg, #2c3e50, #4b6cb7);
+    border-bottom: 3px solid #f39c12;
+}
+
+.admin-nav .nav-brand a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    color: white;
+}
+
+.admin-nav .nav-links a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.admin-nav .nav-links a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #f39c12;
+}
+
+.admin-nav .nav-links a::after {
+    display: none;
+}
+
+.admin-badge {
+    background-color: #f39c12;
+    color: #2c3e50;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.admin-nav .logout-btn {
+    background: rgba(243, 156, 18, 0.2);
+    transition: all 0.3s;
+}
+
+.admin-nav .logout-btn:hover {
+    background: #f39c12;
+    color: #2c3e50;
+}
+
+@media (max-width: 768px) {
+    .admin-nav .nav-links a {
+        justify-content: center;
+    }
+    
+    .admin-badge {
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+}

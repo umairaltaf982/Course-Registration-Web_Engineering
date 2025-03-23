@@ -3,48 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Reports</title>
+    <title>Admin Reports | Course Registration</title>
+    <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/admin/admin-reports.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h2>Admin Reports</h2>
-
-        <h3>Students Registered Per Course</h3>
-        <ul>
-            <% courses.forEach(course => { %>
-                <li>
-                    <strong><%= course.name %> (<%= course.code %>)</strong> -  
-                    Registered Students: <%= course.registeredStudents.length %>
-                </li>
-            <% }) %>
-        </ul>
-
-        <h3>Courses with Available Seats</h3>
-        <ul>
-            <% courses.filter(course => course.seatsAvailable > 0).forEach(course => { %>
-                <li>
-                    <strong><%= course.name %> (<%= course.code %>)</strong> -  
-                    Seats Left: <%= course.seatsAvailable %>
-                </li>
-            <% }) %>
-        </ul>
-
-        <h3>Students Missing Prerequisites</h3>
-        <ul>
-            <% students.filter(student => student.missingPrerequisites.length > 0).forEach(student => { %>
-                <li>
-                    <strong><%= student.name %> (Roll No: <%= student.rollNumber %>)</strong>
-                    <ul>
-                        <% student.missingPrerequisites.forEach(prereq => { %>
-                            <li><%= prereq.name %> (<%= prereq.code %>)</li>
-                        <% }) %>
-                    </ul>
-                </li>
-            <% }) %>
-        </ul>
-
-        <a href="/admin/dashboard" class="btn">Back to Dashboard</a>
+    <%- include('../partials/admin-navbar') %>
+    
+    <div class="dashboard-container">
+        <div class="page-header">
+            <div class="header-content">
+                <h1>System Reports</h1>
+                <p>View enrollment statistics and course registration data</p>
+            </div>
+            <div class="header-actions">
+                <button id="print-report" class="btn primary-btn">
+                    <i class="fas fa-print"></i> Print Report
+                </button>
+                <a href="/admin/dashboard" class="btn secondary-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+        
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="stat-details">
+                    <h3>Total Students</h3>
+                    <p class="stat-value"><%= totalStudents %></p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="stat-details">
+                    <h3>Total Courses</h3>
+                    <p class="stat-value"><%= totalCourses %></p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <div class="stat-details">
+                    <h3>Total Enrollments</h3>
+                    <p class="stat-value"><%= totalEnrollments %></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="charts-container">
+            <div class="chart-card">
+                <h3>Course Registration Statistics</h3>
+                <div class="chart-container">
+                    <canvas id="courseStats"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <h3>Department Statistics</h3>
+                <div class="chart-container">
+                    <canvas id="departmentStats"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="report-section">
+            <h2>Course Enrollment Details</h2>
+            
+            <div class="report-grid">
+                <% courses.forEach(course => { %>
+                    <div class="report-item">
+                        <div class="report-item-header">
+                            <h3><%= course.name %> (<%= course.code %>)</h3>
+                            <span class="course-department"><%= course.department %></span>
+                        </div>
+                        <div class="report-item-body">
+                            <p>Registered Students: <%= course.registeredStudents ? course.registeredStudents.length : 0 %></p>
+                            
+                            <% if (course.registeredStudents && course.registeredStudents.length > 0) { %>
+                                <ul class="registered-students">
+                                    <% course.registeredStudents.forEach(student => { %>
+                                        <li><%= student.name %> (<%= student.rollNumber %>)</li>
+                                    <% }) %>
+                                </ul>
+                            <% } else { %>
+                                <p class="no-students">No students enrolled</p>
+                            <% } %>
+                            
+                            <div class="enrollment-stats">
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: <%= course.registrationRate %>%"></div>
+                                </div>
+                                <span class="progress-text"><%= course.registrationRate %>% Full</span>
+                                <span class="seats-text">
+                                    <%= course.totalSeats - course.seatsAvailable %> / <%= course.totalSeats %> Seats
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+        
+        <div class="report-section">
+            <h2>Department Statistics</h2>
+            
+            <div class="department-stats-grid">
+                <% departmentStats.forEach(dept => { %>
+                    <div class="dept-stat-card">
+                        <h3><%= dept.name %></h3>
+                        <div class="dept-stats">
+                            <div class="dept-stat">
+                                <span class="stat-label">Students:</span>
+                                <span class="stat-value"><%= dept.totalStudents %></span>
+                            </div>
+                            <div class="dept-stat">
+                                <span class="stat-label">Enrollments:</span>
+                                <span class="stat-value"><%= dept.courseEnrollments %></span>
+                            </div>
+                            <div class="dept-stat">
+                                <span class="stat-label">Avg. Courses/Student:</span>
+                                <span class="stat-value">
+                                    <%= (dept.totalStudents > 0 ? (dept.courseEnrollments / dept.totalStudents).toFixed(1) : 0) %>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Print button functionality
+            const printBtn = document.getElementById('print-report');
+            if (printBtn) {
+                printBtn.addEventListener('click', function() {
+                    window.print();
+                });
+            }
+            
+            // Course stats chart
+            const courseCtx = document.getElementById('courseStats').getContext('2d');
+            new Chart(courseCtx, {
+                type: 'bar',
+                data: {
+                    labels: [<% courses.forEach(course => { %>'<%= course.code %>',<% }) %>],
+                    datasets: [{
+                        label: 'Registered Students',
+                        data: [<% courses.forEach(course => { %><%= course.registeredStudents ? course.registeredStudents.length : 0 %>,<% }) %>],
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Students'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Course Code'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Department stats chart
+            const deptCtx = document.getElementById('departmentStats').getContext('2d');
+            new Chart(deptCtx, {
+                type: 'pie',
+                data: {
+                    labels: [<% departmentStats.forEach(dept => { %>'<%= dept.name %>',<% }) %>],
+                    datasets: [{
+                        label: 'Students per Department',
+                        data: [<% departmentStats.forEach(dept => { %><%= dept.totalStudents %>,<% }) %>],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)',
+                            'rgba(255, 159, 64, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Students by Department'
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

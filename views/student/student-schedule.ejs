@@ -3,44 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Weekly Schedule</title>
+    <title>Your Weekly Schedule</title>
+    <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/student/student-schedule.css">
 </head>
 <body>
-    <div class="container">
-        <h2>Your Weekly Schedule</h2>
+    <%- include('../partials/navbar') %>
+    
+    <div class="schedule-container">
+        <header class="schedule-header">
+            <div class="header-content">
+                <h1>My Weekly Schedule</h1>
+                <div class="schedule-stats">
+                    <div class="stat">
+                        <span class="stat-number"><%= student.courses.length %></span>
+                        <span class="stat-label">Courses</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number"><%= student.courses.reduce((total, course) => total + course.creditHours, 0) %></span>
+                        <span class="stat-label">Credit Hours</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="print-schedule" class="btn secondary-btn">
+                    <i class="icon">🖨️</i> Print Schedule
+                </button>
+                <button id="save-schedule" class="btn primary-btn">
+                    <i class="icon">💾</i> Save Schedule
+                </button>
+            </div>
+        </header>
+        
+        <div id="conflict-warning" class="conflict-warning" style="display: none;">
+            <div class="warning-icon">⚠️</div>
+            <div class="warning-content">
+                <h3>Schedule Conflict Detected</h3>
+                <p>You have overlapping courses in your schedule. Please resolve these conflicts to avoid issues.</p>
+            </div>
+        </div>
 
-        <table>
-            <tr>
-                <th>Time Slot</th>
-                <th>Monday</th>
-                <th>Tuesday</th>
-                <th>Wednesday</th>
-                <th>Thursday</th>
-                <th>Friday</th>
-            </tr>
-
-            <% for (let i = 8; i <= 17; i++) { %>
-                <tr>
-                    <td><%= i %>:00 - <%= i + 1 %>:00</td>
-                    <% for (let j = 0; j < 5; j++) { %> 
-                        <td>
-                            <% let conflict = false; %>
-                            <% student.courses.forEach(course => { %>
-                                <% if (course.schedule.day === j && course.schedule.startTime === i) { %>
-                                    <div class="course <%= conflict ? 'conflict' : '' %>">
-                                        <%= course.name %> (<%= course.code %>)
-                                    </div>
-                                    <% conflict = true; %>
-                                <% } %>
-                            <% }) %>
-                        </td>
+        <div class="schedule-grid-wrapper">
+            <div class="schedule-grid" id="schedule-table">
+                <div class="time-column">
+                    <div class="day-header"></div>
+                    <% for (let i = 8; i <= 17; i++) { %>
+                        <div class="time-slot"><%= i %>:00</div>
                     <% } %>
-                </tr>
-            <% } %>
-        </table>
-
-        <a href="/student/dashboard" class="btn">Back to Dashboard</a>
+                </div>
+                
+                <% const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']; %>
+                <% days.forEach((day, dayIndex) => { %>
+                    <div class="day-column">
+                        <div class="day-header"><%= day %></div>
+                        <% for (let hour = 8; hour <= 17; hour++) { %>
+                            <div class="schedule-cell" data-day="<%= dayIndex %>" data-hour="<%= hour %>">
+                                <% 
+                                const coursesInSlot = student.courses.filter(course => 
+                                    course.schedule.day === dayIndex && course.schedule.startTime === hour
+                                );
+                                
+                                const hasConflict = coursesInSlot.length > 1;
+                                %>
+                                
+                                <% coursesInSlot.forEach(course => { %>
+                                    <div class="course-card <%= hasConflict ? 'conflict' : '' %>" data-course-id="<%= course._id %>">
+                                        <div class="course-header">
+                                            <span class="course-code"><%= course.code %></span>
+                                            <button class="remove-course" data-course-id="<%= course._id %>" title="Remove Course">×</button>
+                                        </div>
+                                        <div class="course-name"><%= course.name %></div>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        <% } %>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+        
+        <div class="course-details-panel" id="course-details-panel">
+            <div class="panel-header">
+                <h3>Course Details</h3>
+                <button class="close-panel-btn" id="close-details">×</button>
+            </div>
+            <div id="selected-course-details" class="panel-content">
+                <div class="empty-state">
+                    <div class="empty-icon">📚</div>
+                    <p>Click on any course to view details</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="/student/dashboard" class="btn text-btn">
+                <i class="icon">←</i> Back to Dashboard
+            </a>
+        </div>
     </div>
+    
+    <script src="/js/student/student-schedule.js"></script>
 </body>
 </html>

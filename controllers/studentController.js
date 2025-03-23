@@ -8,7 +8,9 @@ exports.loginStudent = async (req, res) => {
         if (!student) {
             return res.status(404).json({ message: 'Student not found' });
         }
-        res.render('student/student-dashboard');
+        res.render('student/student-dashboard',{
+            student:student
+        });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }
@@ -63,3 +65,16 @@ exports.getStudentSchedule = async (req, res) => {
         res.status(500).json({ message: 'Server error', error });
     }
 };
+
+exports.renderStudentCourses = async(req, res) => {
+    try {
+        const courses = await Course.find({});
+        const student = await Student.findOne({ rollNumber: req.query.rollNumber }).populate('courses');
+        res.render('student/student-courses', {
+            courses:courses,
+            student:student
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
+    }
+}

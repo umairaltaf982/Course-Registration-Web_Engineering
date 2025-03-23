@@ -4,18 +4,301 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/admin/admin-dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h2>Welcome, Admin!</h2>
-
-        <h3>Manage System</h3>
-        <a href="/admin/manage-courses" class="btn">Manage Courses</a>
-        <a href="/admin/manage-students" class="btn">Manage Students</a>
-        <a href="/admin/reports" class="btn">Generate Reports</a>
-
-        <a href="/" class="btn">Logout</a>
+    <%- include('../partials/admin-navbar') %>
+    
+    <div class="dashboard-container">
+        <h1>Administration Dashboard</h1>
+        
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-content">
+                    <h3>Total Courses</h3>
+                    <p id="total-courses">Loading...</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">👨‍🎓</div>
+                <div class="stat-content">
+                    <h3>Total Students</h3>
+                    <p id="total-students">Loading...</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">🪑</div>
+                <div class="stat-content">
+                    <h3>Available Seats</h3>
+                    <p id="available-seats">Loading...</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">⚠️</div>
+                <div class="stat-content">
+                    <h3>Prerequisite Issues</h3>
+                    <p id="prereq-issues">Loading...</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard-sections">
+            <div class="section charts">
+                <div class="chart-container">
+                    <h2>Course Registration Distribution</h2>
+                    <canvas id="registrationChart"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <h2>Department Distribution</h2>
+                    <canvas id="departmentChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Recent Activities</h2>
+                <div class="activity-list" id="activity-list">
+                    <div class="activity-item skeleton"></div>
+                    <div class="activity-item skeleton"></div>
+                    <div class="activity-item skeleton"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quick-access">
+            <h2>Quick Access</h2>
+            <div class="card-grid">
+                <a href="/admin/manage-courses" class="access-card">
+                    <div class="card-icon">📝</div>
+                    <h3>Manage Courses</h3>
+                    <p>Add, edit or remove courses from the system</p>
+                </a>
+                
+                <a href="/admin/manage-students" class="access-card">
+                    <div class="card-icon">👨‍🎓</div>
+                    <h3>Manage Students</h3>
+                    <p>View and modify student registrations</p>
+                </a>
+                
+                <a href="/admin/reports" class="access-card">
+                    <div class="card-icon">📊</div>
+                    <h3>Generate Reports</h3>
+                    <p>Create reports on courses and students</p>
+                </a>
+                
+                <a href="/admin/reports?type=prerequisites" class="access-card">
+                    <div class="card-icon">⚠️</div>
+                    <h3>Prerequisite Issues</h3>
+                    <p>View students missing prerequisites</p>
+                </a>
+            </div>
+        </div>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch dashboard stats
+            fetchDashboardStats();
+            
+            // Load chart data
+            loadCharts();
+            
+            // Load recent activities
+            loadRecentActivities();
+            
+            // Animation for stats cards
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('animated');
+                }, 100 * index);
+            });
+        });
+        
+        async function fetchDashboardStats() {
+            try {
+                const [coursesResponse, studentsResponse] = await Promise.all([
+                    fetch('/api/courses'),
+                    fetch('/api/students')
+                ]);
+                
+                const courses = await coursesResponse.json();
+                const students = await studentsResponse.json();
+                
+                // Update stats
+                document.getElementById('total-courses').textContent = courses.length;
+                document.getElementById('total-students').textContent = students.length;
+                
+                // Calculate available seats
+                const availableSeats = courses.reduce((total, course) => total + course.seatsAvailable, 0);
+                document.getElementById('available-seats').textContent = availableSeats;
+                
+                // Calculate students with prerequisite issues
+                let studentsWithIssues = 0;
+                students.forEach(student => {
+                    if (student.courses && student.courses.length > 0) {
+                        student.courses.forEach(course => {
+                            if (course.prerequisites && course.prerequisites.length > 0) {
+                                // This is simplified - in a real app you'd check if the student has the prerequisites
+                                if (!studentHasPrerequisites(student, course)) {
+                                    studentsWithIssues++;
+                                    return;
+                                }
+                            }
+                        });
+                    }
+                });
+                
+                document.getElementById('prereq-issues').textContent = studentsWithIssues;
+                
+            } catch (error) {
+                console.error('Error fetching dashboard stats:', error);
+            }
+        }
+        
+        // Simplified function - in a real app you'd check against the completed courses
+        function studentHasPrerequisites(student, course) {
+            return true; // Assume all are met for demo
+        }
+        
+        async function loadCharts() {
+            try {
+                const [coursesResponse, studentsResponse] = await Promise.all([
+                    fetch('/api/courses'),
+                    fetch('/api/students')
+                ]);
+                
+                const courses = await coursesResponse.json();
+                const students = await studentsResponse.json();
+                
+                // Course registration chart
+                const registrationData = {};
+                courses.forEach(course => {
+                    const available = course.seatsAvailable;
+                    const total = course.totalSeats;
+                    const registered = total - available;
+                    
+                    registrationData[course.code] = {
+                        registered,
+                        available
+                    };
+                });
+                
+                const courseLabels = Object.keys(registrationData).slice(0, 8); // Show top 8 courses
+                const registeredValues = courseLabels.map(code => registrationData[code].registered);
+                const availableValues = courseLabels.map(code => registrationData[code].available);
+                
+                new Chart(document.getElementById('registrationChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: courseLabels,
+                        datasets: [
+                            {
+                                label: 'Registered',
+                                data: registeredValues,
+                                backgroundColor: '#4caf50'
+                            },
+                            {
+                                label: 'Available',
+                                data: availableValues,
+                                backgroundColor: '#2196f3'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                stacked: true,
+                            },
+                            y: {
+                                stacked: true
+                            }
+                        }
+                    }
+                });
+                
+                // Department distribution chart
+                const departments = {};
+                students.forEach(student => {
+                    if (!departments[student.department]) {
+                        departments[student.department] = 0;
+                    }
+                    departments[student.department]++;
+                });
+                
+                const deptLabels = Object.keys(departments);
+                const deptValues = deptLabels.map(dept => departments[dept]);
+                
+                new Chart(document.getElementById('departmentChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: deptLabels,
+                        datasets: [{
+                            data: deptValues,
+                            backgroundColor: [
+                                '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Error loading charts:', error);
+            }
+        }
+        
+        function loadRecentActivities() {
+            // This would normally fetch from a real activity log
+            // For demo, we'll use placeholder data
+            const activities = [
+                { 
+                    action: 'Course Updated', 
+                    details: 'CS301 Database Systems - Added 10 additional seats', 
+                    timestamp: '2 hours ago' 
+                },
+                { 
+                    action: 'Student Registration', 
+                    details: 'John Smith (F19-101) registered for CS101', 
+                    timestamp: '5 hours ago' 
+                },
+                { 
+                    action: 'Course Created', 
+                    details: 'Added new course: ML401 Machine Learning', 
+                    timestamp: '1 day ago' 
+                },
+                { 
+                    action: 'Prerequisites Updated', 
+                    details: 'Updated prerequisites for CS401 Software Engineering', 
+                    timestamp: '2 days ago' 
+                }
+            ];
+            
+            const activityList = document.getElementById('activity-list');
+            activityList.innerHTML = '';
+            
+            activities.forEach(activity => {
+                const activityEl = document.createElement('div');
+                activityEl.className = 'activity-item';
+                activityEl.innerHTML = `
+                    <div class="activity-header">
+                        <span class="activity-type">${activity.action}</span>
+                        <span class="activity-time">${activity.timestamp}</span>
+                    </div>
+                    <p class="activity-details">${activity.details}</p>
+                `;
+                activityList.appendChild(activityEl);
+            });
+        }
+    </script>
 </body>
 </html>

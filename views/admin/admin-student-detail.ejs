@@ -1,0 +1,117 @@
+.ejs
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/admin/admin-manage-students.css">
+</head>
+<body>
+    <%- include('../partials/admin-navbar') %>
+
+    <div class="container">
+        <h2>Student Details</h2>
+        
+        <% if (error) { %>
+            <div class="alert alert-danger">
+                <%= error %>
+            </div>
+        <% } %>
+        
+        <% if (success) { %>
+            <div class="alert alert-success">
+                <%= success %>
+            </div>
+        <% } %>
+        
+        <div class="student-info">
+            <h3><%= student.name %></h3>
+            <p><strong>Roll Number:</strong> <%= student.rollNumber %></p>
+            <p><strong>Email:</strong> <%= student.email %></p>
+            <p><strong>Department:</strong> <%= student.department %></p>
+            <p><strong>Semester:</strong> <%= student.semester %></p>
+        </div>
+        
+        <h3>Registered Courses</h3>
+        <% if (student.courses.length > 0) { %>
+            <ul class="course-list">
+                <% student.courses.forEach(course => { %>
+                    <li>
+                        <div class="course-info">
+                            <strong><%= course.name %> (<%= course.code %>)</strong>
+                            <p>Department: <%= course.department %></p>
+                            <p>Credit Hours: <%= course.creditHours %></p>
+                            <p>Schedule: <%= ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'][course.schedule.day] %>, 
+                                <%= course.schedule.startTime %>:00 - <%= course.schedule.startTime + 1 %>:00</p>
+                        </div>
+                        
+                        <form action="/api/students/<%= student._id %>/remove-course" method="POST">
+                            <input type="hidden" name="courseId" value="<%= course._id %>">
+                            <button type="submit" class="btn">Remove Course</button>
+                        </form>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>No courses registered.</p>
+        <% } %>
+        
+        <h3>Add Course for Student (Administrative Override)</h3>
+        <form action="/api/students/<%= student._id %>/add-course" method="POST" class="add-course-form">
+            <div class="form-group">
+                <label for="courseId">Select Course:</label>
+                <select id="courseId" name="courseId" required>
+                    <option value="">-- Select a course --</option>
+                    <% availableCourses.forEach(course => { %>
+                        <option value="<%= course._id %>">
+                            <%= course.name %> (<%= course.code %>) - 
+                            <%= ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'][course.schedule.day] %> <%= course.schedule.startTime %>:00
+                            - Seats: <%= course.seatsAvailable %>/<%= course.totalSeats %>
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+            
+            <button type="submit" class="submit-btn">Add Course</button>
+        </form>
+        
+        <h3>Completed Courses</h3>
+        <% if (student.completedCourses.length > 0) { %>
+            <ul class="course-list">
+                <% student.completedCourses.forEach(course => { %>
+                    <li>
+                        <div class="course-info">
+                            <strong><%= course.name %> (<%= course.code %>)</strong>
+                            <p>Department: <%= course.department %></p>
+                            <p>Credit Hours: <%= course.creditHours %></p>
+                        </div>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>No completed courses.</p>
+        <% } %>
+        
+        <div class="button-group">
+            <a href="/admin/manage-students" class="btn">Back to Student List</a>
+            <a href="/admin/dashboard" class="btn">Back to Dashboard</a>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const removeForms = document.querySelectorAll('form[action*="remove-course"]');
+            removeForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    if (confirm('Are you sure you want to remove this course from the student\'s schedule?')) {
+                        this.submit();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

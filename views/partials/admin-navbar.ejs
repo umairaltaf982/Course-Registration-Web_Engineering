@@ -1,0 +1,18 @@
+<nav class="main-nav admin-nav">
+    <div class="nav-brand">
+        <a href="/admin/dashboard">
+            <i class="fas fa-university"></i> Course Registration Admin
+        </a>
+    </div>
+    
+    <ul class="nav-links">
+        <li><a href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="/admin/manage-courses"><i class="fas fa-book"></i> Manage Courses</a></li>
+        <li><a href="/admin/manage-students"><i class="fas fa-user-graduate"></i> Manage Students</a></li>
+        <li><a href="/admin/reports"><i class="fas fa-chart-bar"></i> Reports</a></li>
+        <li class="user-info">
+            <span class="admin-badge">Admin</span> <%= user.name %>
+            <a href="/auth/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </li>
+    </ul>
+</nav>
