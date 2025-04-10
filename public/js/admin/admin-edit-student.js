@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Elements
+      
     const form = document.querySelector('.edit-form');
     const alertCloseButtons = document.querySelectorAll('.close-alert');
     
-    // Close alerts
+      
     if (alertCloseButtons) {
         alertCloseButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -12,24 +12,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Form submission with method override
+      
     if (form) {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Create form data
+              
             const formData = new FormData(form);
             
-            // Convert form data to JSON
+              
             const data = {};
             formData.forEach((value, key) => {
-                // Skip the _method field for fetch
+                  
                 if (key !== '_method') {
                     data[key] = value;
                 }
             });
             
-            // Make PUT request
+              
             fetch(form.action, {
                 method: 'PUT',
                 headers: {
@@ -44,10 +44,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => {
-                // Success notification
+                  
                 showNotification('Student updated successfully', 'success');
                 
-                // Redirect after short delay
+                  
                 setTimeout(() => {
                     window.location.href = '/admin/manage-students';
                 }, 1500);
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <span>${message}</span>
         `;
         
-        // Style the notification
+          
         Object.assign(notification.style, {
             position: 'fixed',
             bottom: '20px',
@@ -88,13 +88,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         document.body.appendChild(notification);
         
-        // Animate in
+          
         setTimeout(() => {
             notification.style.opacity = '1';
             notification.style.transform = 'translateY(0)';
         }, 10);
         
-        // Remove after delay
+          
         setTimeout(() => {
             notification.style.opacity = '0';
             notification.style.transform = 'translateY(20px)';

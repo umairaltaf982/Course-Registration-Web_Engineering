@@ -7,7 +7,7 @@
     <title>Student Details | Admin</title>
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/admin/admin-manage-students.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https:  
 </head>
 <body>
     <%- include('../partials/navbar') %>
@@ -167,7 +167,7 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Set up confirmation modal for course removal
+              
             const removeForms = document.querySelectorAll('.remove-course-form');
             const confirmationModal = document.getElementById('confirmation-modal');
             const confirmActionBtn = document.getElementById('confirm-action');
@@ -177,7 +177,7 @@
             
             let activeForm = null;
             
-            // Remove course confirmation
+              
             removeForms.forEach(form => {
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
@@ -186,7 +186,7 @@
                 });
             });
             
-            // Close alerts
+              
             if (alertCloseButtons) {
                 alertCloseButtons.forEach(button => {
                     button.addEventListener('click', function() {
@@ -195,7 +195,7 @@
                 });
             }
             
-            // Modal event listeners
+              
             if (closeModalBtn) {
                 closeModalBtn.addEventListener('click', hideModal);
             }
@@ -208,7 +208,7 @@
                 confirmActionBtn.addEventListener('click', confirmRemoveCourse);
             }
             
-            // Click outside to close modal
+              
             window.addEventListener('click', function(e) {
                 if (e.target === confirmationModal) {
                     hideModal();
@@ -230,11 +230,11 @@
             
             function confirmRemoveCourse() {
                 if (activeForm) {
-                    // Add loading state to button
+                      
                     confirmActionBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Removing...';
                     confirmActionBtn.disabled = true;
                     
-                    // Submit the form
+                      
                     activeForm.submit();
                 }
             }

@@ -1,4 +1,4 @@
-/* Base Styles */
+ 
 body {
     font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
     margin: 0;
@@ -18,7 +18,7 @@ body {
 
 .main-content {
     flex: 1;
-    min-width: 0; /* Prevent flex items from overflowing */
+    min-width: 0;  
 }
 
 .side-panel {
@@ -28,7 +28,7 @@ body {
     align-self: flex-start;
 }
 
-/* Header Styles */
+ 
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -49,7 +49,7 @@ body {
     gap: 12px;
 }
 
-/* Buttons */
+ 
 .btn {
     cursor: pointer;
     border: none;
@@ -103,7 +103,7 @@ body {
     box-shadow: none !important;
 }
 
-/* Course Filters Panel */
+ 
 .course-filters-panel {
     background: white;
     padding: 20px;
@@ -185,7 +185,7 @@ body {
     margin-top: 20px;
 }
 
-/* Course Cards */
+ 
 .course-results-header {
     display: flex;
     justify-content: space-between;
@@ -268,7 +268,7 @@ body {
     margin-top: 8px;
 }
 
-/* Add to your student-courses.css file */
+ 
 
 .prerequisites-section {
     background-color: #fff8e8;
@@ -344,7 +344,7 @@ body {
     transform: none;
 }
 
-/* Side Panel */
+ 
 .temp-schedule-panel,
 .course-details-panel {
     background: white;
@@ -438,7 +438,7 @@ body {
     margin: 10px 0;
 }
 
-/* Modal */
+ 
 .modal-container {
     position: fixed;
     top: 0;
@@ -510,7 +510,7 @@ body {
     gap: 10px;
 }
 
-/* Responsive Design */
+ 
 @media (max-width: 1100px) {
     .page-container {
         flex-direction: column;
@@ -542,7 +542,7 @@ body {
     }
 }
 
-/* Animations */
+ 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }

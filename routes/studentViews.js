@@ -4,7 +4,7 @@ const Student = require('../models/Student');
 const Course = require('../models/Course');
 const { requireStudentLogin } = require('../middleware/sessionMiddleware');
 
-// Student Dashboard
+  
 router.get('/dashboard', requireStudentLogin, async (req, res) => {
     try {
         const student = await Student.findById(req.session.studentId)
@@ -17,7 +17,7 @@ router.get('/dashboard', requireStudentLogin, async (req, res) => {
     }
 });
 
-// Student Schedule
+  
 router.get('/schedule', requireStudentLogin, async (req, res) => {
     try {
         const student = await Student.findById(req.session.studentId)
@@ -30,17 +30,17 @@ router.get('/schedule', requireStudentLogin, async (req, res) => {
     }
 });
 
-// Browse Available Courses
+  
 router.get('/courses', requireStudentLogin, async (req, res) => {
     try {
         const student = await Student.findById(req.session.studentId);
         
-        // Get courses the student is not registered for
+          
         const courses = await Course.find({
             _id: { $nin: student.courses }
         }).populate('prerequisites');
         
-        // Get departments for filtering
+          
         const departments = await Course.distinct('department');
         
         res.render('student/student-courses', { 
@@ -54,17 +54,17 @@ router.get('/courses', requireStudentLogin, async (req, res) => {
     }
 });
 
-// Add course to temporary schedule
+  
 router.post('/add-to-temp', requireStudentLogin, async (req, res) => {
     try {
         const { courseId } = req.body;
         
-        // Initialize temporary schedule if not exists
+          
         if (!req.session.temporarySchedule) {
             req.session.temporarySchedule = [];
         }
         
-        // Check if course already in temporary schedule
+          
         if (!req.session.temporarySchedule.includes(courseId)) {
             req.session.temporarySchedule.push(courseId);
         }
@@ -76,7 +76,7 @@ router.post('/add-to-temp', requireStudentLogin, async (req, res) => {
     }
 });
 
-// Remove course from temporary schedule
+  
 router.post('/remove-from-temp', requireStudentLogin, (req, res) => {
     try {
         const { courseId, clearAll } = req.body;
@@ -94,7 +94,7 @@ router.post('/remove-from-temp', requireStudentLogin, (req, res) => {
     }
 });
 
-// Get temporary schedule courses
+  
 router.get('/temp-schedule', requireStudentLogin, async (req, res) => {
     try {
         if (!req.session.temporarySchedule || req.session.temporarySchedule.length === 0) {
@@ -109,7 +109,7 @@ router.get('/temp-schedule', requireStudentLogin, async (req, res) => {
     }
 });
 
-// Confirm registration from temporary schedule
+  
 router.post('/register', requireStudentLogin, async (req, res) => {
     try {
         if (!req.session.temporarySchedule || req.session.temporarySchedule.length === 0) {
@@ -119,7 +119,7 @@ router.post('/register', requireStudentLogin, async (req, res) => {
         const student = await Student.findById(req.session.studentId);
         const completedCourseIds = student.completedCourses.map(course => course.toString());
         
-        // Check for time conflicts
+          
         const tempCourses = await Course.find({ _id: { $in: req.session.temporarySchedule } }).populate('prerequisites');
         const existingCourses = await Course.find({ _id: { $in: student.courses } });
         const allCourses = [...tempCourses, ...existingCourses];
@@ -169,7 +169,7 @@ router.post('/register', requireStudentLogin, async (req, res) => {
             });
         }
         
-        // Check seat availability
+          
         for (const courseId of req.session.temporarySchedule) {
             const course = await Course.findById(courseId);
             if (course.seatsAvailable <= 0) {
@@ -179,16 +179,16 @@ router.post('/register', requireStudentLogin, async (req, res) => {
                 });
             }
             
-            // Decrement seat count
+              
             course.seatsAvailable -= 1;
             await course.save();
         }
         
-        // Add courses to student record
+          
         student.courses = [...student.courses, ...req.session.temporarySchedule];
         await student.save();
         
-        // Clear temporary schedule
+          
         req.session.temporarySchedule = [];
         
         res.json({ success: true, message: 'Registration successful!' });
@@ -198,13 +198,13 @@ router.post('/register', requireStudentLogin, async (req, res) => {
     }
 });
 
-// Save permanent schedule (confirm all changes)
+  
 router.post('/save-schedule', requireStudentLogin, async (req, res) => {
     try {
         const student = await Student.findById(req.session.studentId);
         
-        // No changes needed - schedule is already saved in the database
-        // This is for UI/UX purposes to give feedback
+          
+          
         
         res.json({ success: true, message: 'Schedule saved successfully' });
     } catch (error) {
@@ -213,7 +213,7 @@ router.post('/save-schedule', requireStudentLogin, async (req, res) => {
     }
 });
 
-// Add API endpoint for course departments (for filtering)
+  
 router.get('/api/courses/departments', async (req, res) => {
     try {
         const departments = await Course.distinct('department');

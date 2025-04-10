@@ -4,12 +4,12 @@ const Course = require('../models/Course');
 const Student = require('../models/Student');
 const { requireAdminLogin } = require('../middleware/sessionMiddleware');
 
-// Admin Dashboard
+  
 router.get('/dashboard', requireAdminLogin, (req, res) => {
     res.render('admin/admin-dashboard');
 });
 
-// Manage Courses
+  
 router.get('/manage-courses', requireAdminLogin, async (req, res) => {
     try {
         const courses = await Course.find().populate('prerequisites');
@@ -24,10 +24,10 @@ router.get('/manage-courses', requireAdminLogin, async (req, res) => {
     }
 });
 
-// Add Course Form
+  
 router.get('/add-course', requireAdminLogin, async (req, res) => {
     try {
-        const courses = await Course.find(); // For prerequisites selection
+        const courses = await Course.find();   
         res.render('admin/admin-add-course', { courses, error: null });
     } catch (error) {
         res.render('admin/admin-add-course', { 
@@ -37,7 +37,7 @@ router.get('/add-course', requireAdminLogin, async (req, res) => {
     }
 });
 
-// Add Student Form
+  
 router.get('/add-student', requireAdminLogin, async (req, res) => {
     try {
         res.render('admin/admin-add-student', { 
@@ -50,7 +50,7 @@ router.get('/add-student', requireAdminLogin, async (req, res) => {
     }
 });
 
-// Edit Course Form
+  
 router.get('/edit-course/:id', requireAdminLogin, async (req, res) => {
     try {
         const course = await Course.findById(req.params.id).populate('prerequisites');
@@ -67,7 +67,7 @@ router.get('/edit-course/:id', requireAdminLogin, async (req, res) => {
     }
 });
 
-// Manage Students
+  
 router.get('/manage-students', requireAdminLogin, async (req, res) => {
     try {
         const students = await Student.find().populate('courses');
@@ -87,7 +87,7 @@ router.get('/manage-students', requireAdminLogin, async (req, res) => {
 });
 
 
-// View Student Details
+  
 router.get('/student/:id', requireAdminLogin, async (req, res) => {
     try {
         const student = await Student.findById(req.params.id).populate('courses completedCourses');
@@ -111,7 +111,7 @@ router.get('/student/:id', requireAdminLogin, async (req, res) => {
     }
 });
 
-// Edit Student Form
+  
 router.get('/edit-student/:id', requireAdminLogin, async (req, res) => {
     try {
         const student = await Student.findById(req.params.id);
@@ -130,18 +130,18 @@ router.get('/edit-student/:id', requireAdminLogin, async (req, res) => {
     }
 });
 
-// Find the reports route and replace it with this:
+  
 
-// Admin Reports
+  
 router.get('/reports', requireAdminLogin, async (req, res) => {
     try {
-        // Get all courses with student data
+          
         const courses = await Course.find().lean();
         const students = await Student.find().populate('courses').lean();
         
-        // Calculate registered students for each course
+          
         const coursesWithStudents = courses.map(course => {
-            // Find students enrolled in this course
+              
             const registeredStudents = students.filter(student => 
                 student.courses && student.courses.some(c => 
                     c && c._id && course._id && 
@@ -158,7 +158,7 @@ router.get('/reports', requireAdminLogin, async (req, res) => {
             };
         });
         
-        // Department statistics
+          
         const departmentStats = {};
         students.forEach(student => {
             const dept = student.department || 'Undeclared';

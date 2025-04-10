@@ -3,7 +3,7 @@ const router = express.Router();
 const Course = require('../models/Course');
 const { requireAdminLogin } = require('../middleware/sessionMiddleware');
 
-// Get all courses
+  
 router.get('/', async (req, res) => {
     try {
         const courses = await Course.find().populate('prerequisites');
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Get single course
+  
 router.get('/:id', async (req, res) => {
     try {
         const course = await Course.findById(req.params.id).populate('prerequisites');
@@ -30,7 +30,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Create course (admin only)
+  
 router.post('/', requireAdminLogin, async (req, res) => {
     try {
         const {
@@ -46,7 +46,7 @@ router.post('/', requireAdminLogin, async (req, res) => {
             description
         } = req.body;
         
-        // Create new course
+          
         const course = new Course({
             code,
             name,
@@ -84,7 +84,7 @@ router.post('/', requireAdminLogin, async (req, res) => {
     }
 });
 
-// Update course (admin only)
+  
 router.put('/:id', requireAdminLogin, async (req, res) => {
     try {
         const {
@@ -106,12 +106,12 @@ router.put('/:id', requireAdminLogin, async (req, res) => {
             return res.status(404).json({ message: 'Course not found' });
         }
         
-        // Calculate seats available based on current registrations
+          
         const registeredSeats = course.totalSeats - course.seatsAvailable;
         const newTotalSeats = parseInt(totalSeats);
         const newSeatsAvailable = Math.max(0, newTotalSeats - registeredSeats);
         
-        // Update course
+          
         course.code = code;
         course.name = name;
         course.department = department;
@@ -146,7 +146,7 @@ router.put('/:id', requireAdminLogin, async (req, res) => {
     }
 });
 
-// Delete course (admin only)
+  
 router.delete('/:id', requireAdminLogin, async (req, res) => {
     try {
         const course = await Course.findById(req.params.id);

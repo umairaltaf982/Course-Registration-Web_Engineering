@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Report type selection
+      
     const reportTypeSelect = document.getElementById('report-type');
     const reportSections = document.querySelectorAll('.report-section');
     
@@ -16,11 +16,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
         
-        // Initialize with the first report type
+          
         reportTypeSelect.dispatchEvent(new Event('change'));
     }
     
-    // Print report functionality
+      
     const printButton = document.getElementById('print-report');
     if (printButton) {
         printButton.addEventListener('click', function() {
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Filter functionality for course reports
+      
     const courseFilterInput = document.getElementById('course-filter');
     if (courseFilterInput) {
         const courseItems = document.querySelectorAll('.course-item');
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Filter functionality for student reports
+      
     const studentFilterInput = document.getElementById('student-filter');
     if (studentFilterInput) {
         const studentItems = document.querySelectorAll('.student-item');
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Export as CSV functionality
+      
     const exportButton = document.getElementById('export-csv');
     if (exportButton) {
         exportButton.addEventListener('click', function() {
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let data = [];
             let headers = [];
             
-            // Get visible report section
+              
             const activeSection = document.querySelector(`.report-section[style*="display: block"]`);
             if (!activeSection) return;
             
@@ -136,12 +136,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function exportToCSV(data, headers, filename) {
         let csvContent = "data:text/csv;charset=utf-8,";
         
-        // Add headers
+          
         csvContent += headers.join(',') + '\n';
         
-        // Add data rows
+          
         data.forEach(row => {
-            // Escape values with commas by wrapping in quotes
+              
             const processedRow = row.map(value => {
                 if (value.includes(',')) {
                     return `"${value}"`;
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
             csvContent += processedRow.join(',') + '\n';
         });
         
-        // Create download link
+          
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement('a');
         link.setAttribute('href', encodedUri);

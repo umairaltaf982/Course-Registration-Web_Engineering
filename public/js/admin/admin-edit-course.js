@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Elements
+      
     const form = document.getElementById('edit-course-form');
     const prerequisitesField = document.getElementById('prerequisites');
     const availablePrerequisitesSelect = document.getElementById('availablePrerequisites');
@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedPrerequisitesList = document.getElementById('selectedPrerequisites');
     const alertCloseButtons = document.querySelectorAll('.close-alert');
     
-    // Set up event listeners
+      
     if (addPrerequisiteBtn && prerequisitesField && availablePrerequisitesSelect) {
         addPrerequisiteBtn.addEventListener('click', function() {
             const selectedOption = availablePrerequisitesSelect.options[availablePrerequisitesSelect.selectedIndex];
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const currentPrereqs = prerequisitesField.value ? 
                     prerequisitesField.value.split(',') : [];
                 
-                // Check if already added
+                  
                 if (!currentPrereqs.includes(selectedOption.value)) {
                     if (currentPrereqs.length > 0) {
                         prerequisitesField.value += `,${selectedOption.value}`;
@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Handle existing prerequisites remove buttons
+      
     setupRemovePrerequisiteButtons();
     
-    // Close alerts
+      
     if (alertCloseButtons) {
         alertCloseButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -41,29 +41,29 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Handle form submission with method override
+      
     if (form) {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Basic validation
+              
             if (!validateForm()) {
                 return;
             }
             
-            // Create form data
+              
             const formData = new FormData(form);
             
-            // Convert form data to JSON
+              
             const data = {};
             formData.forEach((value, key) => {
-                // Skip the _method field for fetch
+                  
                 if (key !== '_method') {
                     data[key] = value;
                 }
             });
             
-            // Make PUT request
+              
             fetch(form.action, {
                 method: 'PUT',
                 headers: {
@@ -78,10 +78,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(() => {
-                // Success notification
+                  
                 showNotification('Course updated successfully', 'success');
                 
-                // Redirect after short delay
+                  
                 setTimeout(() => {
                     window.location.href = '/admin/manage-courses';
                 }, 1500);
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Functions
+      
     function validateForm() {
         const nameInput = document.getElementById('name');
         const codeInput = document.getElementById('code');
@@ -112,10 +112,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function showInputError(inputElement, message) {
-        // Add error styling
+          
         inputElement.style.borderColor = '#ef4444';
         
-        // Create error message if it doesn't exist
+          
         const errorId = `${inputElement.id}-error`;
         let errorElement = document.getElementById(errorId);
         
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         errorElement.textContent = message;
         
-        // Remove error on input
+          
         inputElement.addEventListener('input', function onInput() {
             inputElement.style.borderColor = '';
             if (errorElement) {
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
             inputElement.removeEventListener('input', onInput);
         });
         
-        // Scroll to the error
+          
         inputElement.scrollIntoView({
             behavior: 'smooth',
             block: 'center'
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <span>${message}</span>
         `;
         
-        // Style the notification
+          
         Object.assign(notification.style, {
             position: 'fixed',
             bottom: '20px',
@@ -235,13 +235,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         document.body.appendChild(notification);
         
-        // Animate in
+          
         setTimeout(() => {
             notification.style.opacity = '1';
             notification.style.transform = 'translateY(0)';
         }, 10);
         
-        // Remove after delay
+          
         setTimeout(() => {
             notification.style.opacity = '0';
             notification.style.transform = 'translateY(20px)';

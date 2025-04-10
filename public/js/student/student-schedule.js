@@ -1,27 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Elements
+      
     const scheduleTable = document.getElementById('schedule-table');
     const conflictWarning = document.getElementById('conflict-warning');
     const printButton = document.getElementById('print-schedule');
     const saveButton = document.getElementById('save-schedule');
     
-    // DOM elements for course info
+      
     const courseDetailPanel = document.getElementById('course-details-panel');
     const selectedCourseDetails = document.getElementById('selected-course-details');
     const closeDetailsBtn = document.getElementById('close-details');
     
-    // Check for conflicts on page load and set up event listeners
+      
     initializeSchedule();
     
     function initializeSchedule() {
-        // Check for conflicts
+          
         checkForConflicts();
         
-        // Add event listeners
+          
         setupRemoveButtons();
         setupCourseDetailView();
         
-        // Schedule actions
+          
         if (printButton) {
             printButton.addEventListener('click', function() {
                 window.print();
@@ -41,12 +41,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Helper functions
+      
     function checkForConflicts() {
         const slots = {};
         let hasConflicts = false;
         
-        // Get all course elements in the schedule
+          
         const courseElements = document.querySelectorAll('.course-card');
         
         courseElements.forEach(course => {
@@ -58,14 +58,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const key = `${day}-${hour}`;
             
             if (slots[key]) {
-                // We have a conflict
+                  
                 hasConflicts = true;
             } else {
                 slots[key] = course;
             }
         });
         
-        // Show warning if conflicts exist
+          
         if (conflictWarning) {
             conflictWarning.style.display = hasConflicts ? 'flex' : 'none';
         }
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         removeButtons.forEach(button => {
             button.addEventListener('click', function(e) {
-                e.stopPropagation(); // Don't trigger the course click event
+                e.stopPropagation();   
                 
                 const courseId = this.dataset.courseId;
                 showConfirmRemoveDialog(courseId);
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         courseElements.forEach(course => {
             course.addEventListener('click', function(e) {
-                // Don't trigger if the remove button was clicked
+                  
                 if (e.target.classList.contains('remove-course')) return;
                 
                 const courseId = this.dataset.courseId;
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function showCourseDetails(courseId) {
-        // Show the panel (with loading state)
+          
         courseDetailPanel.style.display = 'block';
         selectedCourseDetails.innerHTML = `
             <div class="loading-spinner">
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (selectedCourseDetails) {
                     const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
                     
-                    // Create detailed view
+                      
                     let detailsHTML = `
                         <h4>${course.name} (${course.code})</h4>
                         
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     `;
                     
-                    // Add prerequisites if any
+                      
                     if (course.prerequisites && course.prerequisites.length > 0) {
                         detailsHTML += '<div class="prerequisites-section"><h5>Prerequisites:</h5><ul class="prereq-list">';
                         course.prerequisites.forEach(prereq => {
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     selectedCourseDetails.innerHTML = detailsHTML;
                     
-                    // Add styles for the details
+                      
                     const style = document.createElement('style');
                     style.textContent = `
                         .course-detail-grid {
@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function removeCourse(courseId) {
         if (!courseId) return;
         
-        // Show removing state
+          
         const courseElement = document.querySelector(`.course-card[data-course-id="${courseId}"]`);
         if (courseElement) {
             courseElement.classList.add('removing');
@@ -260,14 +260,14 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Remove the course element with animation
+                      
                     if (courseElement) {
                         courseElement.style.height = '0';
                         courseElement.style.opacity = '0';
                         courseElement.style.padding = '0';
                         courseElement.style.margin = '0';
                         
-                        // Then reload the page after animation
+                          
                         setTimeout(() => {
                             window.location.reload();
                         }, 500);
@@ -276,10 +276,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 } else {
                     alert('Failed to remove course: ' + data.message);
-                    // Restore the element if there was an error
+                      
                     if (courseElement) {
                         courseElement.classList.remove('removing');
-                        // We'll reload to restore the proper state
+                          
                         window.location.reload();
                     }
                 }
@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function savePermanentSchedule() {
-        // Show saving indicator
+          
         const originalText = saveButton.innerHTML;
         saveButton.innerHTML = '<div class="spinner-small"></div> Saving...';
         saveButton.disabled = true;
@@ -307,19 +307,19 @@ document.addEventListener('DOMContentLoaded', function() {
         })
             .then(response => response.json())
             .then(data => {
-                // Restore button
+                  
                 setTimeout(() => {
                     saveButton.innerHTML = originalText;
                     saveButton.disabled = false;
                     
                     if (data.success) {
-                        // Show success message
+                          
                         const successMessage = document.createElement('div');
                         successMessage.className = 'success-toast';
                         successMessage.innerHTML = '<div class="success-icon">✓</div><div>Schedule saved successfully!</div>';
                         document.body.appendChild(successMessage);
                         
-                        // Auto-remove the success message
+                          
                         setTimeout(() => {
                             successMessage.style.opacity = '0';
                             setTimeout(() => {
@@ -329,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     } else {
                         alert('Failed to save schedule: ' + data.message);
                     }
-                }, 800); // Ensure the saving indicator shows for at least 800ms
+                }, 800);   
             })
             .catch(error => {
                 console.error('Error saving schedule:', error);
@@ -338,7 +338,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('An error occurred while saving the schedule. Please try again.');
             });
             
-        // Add styles for the spinner and toast
+          
         const style = document.createElement('style');
         style.textContent = `
             .spinner-small {

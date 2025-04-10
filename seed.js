@@ -4,10 +4,10 @@ const Admin = require('./models/Admin');
 const Student = require('./models/Student');
 const Course = require('./models/Course');
 
-// Load environment variables
+  
 dotenv.config();
 
-// Connect to MongoDB
+  
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -19,21 +19,21 @@ mongoose.connect(process.env.MONGO_URI, {
     process.exit(1);
 });
 
-// Seed the database with initial data
+  
 async function seedDatabase() {
     try {
-        // Clear existing data
+          
         await Admin.deleteMany({});
         await Student.deleteMany({});
         await Course.deleteMany({});
         
         console.log('Cleared existing data');
 
-        // Create admin users
+          
         const admins = await Admin.create([
             {
                 username: 'admin',
-                password: 'password',  // In production, use bcrypt to hash passwords
+                password: 'password',    
                 name: 'Administrator',
                 email: 'admin@university.edu'
             },
@@ -47,7 +47,7 @@ async function seedDatabase() {
         
         console.log('Created admin users:', admins.map(admin => admin.username));
 
-        // Create courses
+          
         const coursesData = [
             {
                 code: 'CS101',
@@ -142,7 +142,7 @@ async function seedDatabase() {
         const courses = await Course.create(coursesData);
         console.log('Created courses:', courses.map(course => course.code));
 
-        // Set up prerequisites
+          
         const cs201 = courses.find(c => c.code === 'CS201');
         const cs101 = courses.find(c => c.code === 'CS101');
         const cs301 = courses.find(c => c.code === 'CS301');
@@ -150,25 +150,25 @@ async function seedDatabase() {
         const math301 = courses.find(c => c.code === 'MATH301');
         const math201 = courses.find(c => c.code === 'MATH201');
 
-        // CS201 requires CS101
+          
         cs201.prerequisites = [cs101._id];
         await cs201.save();
 
-        // CS301 requires CS201
+          
         cs301.prerequisites = [cs201._id];
         await cs301.save();
 
-        // CS401 requires CS301
+          
         cs401.prerequisites = [cs301._id];
         await cs401.save();
 
-        // MATH301 requires MATH201
+          
         math301.prerequisites = [math201._id];
         await math301.save();
 
         console.log('Set up course prerequisites');
 
-        // Create students
+          
         const students = await Student.create([
             {
                 rollNumber: 'F19-101',
@@ -219,7 +219,7 @@ async function seedDatabase() {
 
         console.log('Created students:', students.map(student => student.rollNumber));
 
-        // Update seat availability based on student registrations
+          
         for (const student of students) {
             for (const courseId of student.courses) {
                 const course = await Course.findById(courseId);

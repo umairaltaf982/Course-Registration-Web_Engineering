@@ -2,7 +2,6 @@ exports.errorHandler = (err, req, res, next) => {
     const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
     console.error(err.stack);
     
-    // Handle API requests
     if (req.headers['content-type'] === 'application/json') {
         return res.status(statusCode).json({
             message: err.message,
@@ -10,7 +9,6 @@ exports.errorHandler = (err, req, res, next) => {
         });
     }
     
-    // Handle regular web requests
     res.status(statusCode);
     res.render('error', {
         message: err.message,

@@ -1,4 +1,4 @@
-/* Basic Setup */
+ 
 body {
     font-family: 'Segoe UI', 'Roboto', sans-serif;
     margin: 0;
@@ -13,7 +13,7 @@ body {
     padding: 25px;
 }
 
-/* Page Header */
+ 
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -76,7 +76,7 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* Stats Overview */
+ 
 .stats-overview {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -119,7 +119,7 @@ body {
     margin: 0;
 }
 
-/* Charts */
+ 
 .charts-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
@@ -144,7 +144,7 @@ body {
     height: 300px;
 }
 
-/* Report Sections */
+ 
 .report-section {
     background: white;
     border-radius: 10px;
@@ -250,7 +250,7 @@ body {
     float: right;
 }
 
-/* Department Stats */
+ 
 .department-stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -287,7 +287,7 @@ body {
     color: #718096;
 }
 
-/* Media Queries */
+ 
 @media (max-width: 768px) {
     .dashboard-container {
         padding: 15px;
@@ -317,7 +317,7 @@ body {
     }
 }
 
-/* Print styles */
+ 
 @media print {
     nav, .header-actions {
         display: none !important;

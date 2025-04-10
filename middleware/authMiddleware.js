@@ -13,7 +13,6 @@ exports.authenticateStudent = async (req, res, next) => {
             });
         }
         
-        // Store student in session
         req.session.studentId = student._id;
         req.session.studentName = student.name;
         req.session.rollNumber = student.rollNumber;
@@ -40,7 +39,6 @@ exports.authenticateAdmin = async (req, res, next) => {
             });
         }
         
-        // In a production environment, you would use bcrypt to compare passwords
         const isMatch = password === admin.password;
         
         if (!isMatch) {
@@ -50,7 +48,6 @@ exports.authenticateAdmin = async (req, res, next) => {
             });
         }
         
-        // Store admin in session
         req.session.adminId = admin._id;
         req.session.adminName = admin.name;
         req.session.adminUsername = admin.username;

@@ -32,11 +32,11 @@ const CourseSchema = new mongoose.Schema({
     },
     schedule: {
         day: {
-            type: Number, // 0-4 (Monday-Friday)
+            type: Number,
             required: true
         },
         startTime: {
-            type: Number, // 24-hour format
+            type: Number,
             required: true
         }
     },

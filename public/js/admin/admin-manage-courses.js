@@ -1,26 +1,26 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Elements
+      
     const courseSearchInput = document.getElementById('courseSearch');
     const courseList = document.getElementById('course-list');
     const addCourseForm = document.getElementById('add-course-form');
     const deleteButtons = document.querySelectorAll('.delete-btn');
     const alertCloseButtons = document.querySelectorAll('.close-alert');
     
-    // Modal elements
+      
     const deleteModal = document.getElementById('deleteModal');
     const closeModalButton = document.querySelector('.close-modal');
     const cancelDeleteButton = document.getElementById('cancelDelete');
     const confirmDeleteButton = document.getElementById('confirmDelete');
     const courseToDeleteDisplay = document.getElementById('courseToDelete');
     
-    // Current course to delete
+      
     let currentCourseId = null;
     let currentCourseName = null;
     
-    // Handle prerequisites
+      
     setupPrerequisites();
     
-    // Course search functionality
+      
     if (courseSearchInput && courseList) {
         courseSearchInput.addEventListener('input', function() {
             const searchTerm = this.value.trim().toLowerCase();
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Form validation
+      
     if (addCourseForm) {
         addCourseForm.addEventListener('submit', function(e) {
             const nameInput = document.getElementById('name');
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Close alerts
+      
     if (alertCloseButtons) {
         alertCloseButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Delete course buttons
+      
     if (deleteButtons) {
         deleteButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -79,28 +79,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentCourseId = courseId;
                 currentCourseName = courseName;
                 
-                // Update modal and show it
+                  
                 courseToDeleteDisplay.textContent = courseName;
                 deleteModal.style.display = 'block';
             });
         });
     }
     
-    // Close modal
+      
     if (closeModalButton) {
         closeModalButton.addEventListener('click', function() {
             deleteModal.style.display = 'none';
         });
     }
     
-    // Cancel delete
+      
     if (cancelDeleteButton) {
         cancelDeleteButton.addEventListener('click', function() {
             deleteModal.style.display = 'none';
         });
     }
     
-    // Confirm delete
+      
     if (confirmDeleteButton) {
         confirmDeleteButton.addEventListener('click', function() {
             if (currentCourseId) {
@@ -109,14 +109,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Click outside modal to close
+      
     window.addEventListener('click', function(e) {
         if (e.target === deleteModal) {
             deleteModal.style.display = 'none';
         }
     });
     
-    // Functions
+      
     function setupPrerequisites() {
         const prerequisitesField = document.getElementById('prerequisites');
         const allCoursesSelect = document.getElementById('availablePrerequisites');
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const prerequisitesList = document.getElementById('selectedPrerequisites');
         
         if (prerequisitesField && allCoursesSelect && addPrereqButton && prerequisitesList) {
-            // Initialize from existing prerequisites if editing
+              
             updatePrerequisitesList();
             
             addPrereqButton.addEventListener('click', function() {
@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const currentPrereqs = prerequisitesField.value ? 
                         prerequisitesField.value.split(',') : [];
                     
-                    // Check if already added
+                      
                     if (!currentPrereqs.includes(selectedOption.value)) {
                         if (currentPrereqs.length > 0) {
                             prerequisitesField.value += `,${selectedOption.value}`;
@@ -195,10 +195,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function showInputError(inputElement, message) {
-        // Add error styling
+          
         inputElement.style.borderColor = '#ef4444';
         
-        // Create error message if it doesn't exist
+          
         const errorId = `${inputElement.id}-error`;
         let errorElement = document.getElementById(errorId);
         
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         errorElement.textContent = message;
         
-        // Remove error on input
+          
         inputElement.addEventListener('input', function onInput() {
             inputElement.style.borderColor = '';
             if (errorElement) {
@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function deleteCourse(courseId) {
-        // Show loading state in modal
+          
         confirmDeleteButton.disabled = true;
         confirmDeleteButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
         
@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(() => {
-                // Success - remove the card and close modal
+                  
                 const courseCard = document.querySelector(`.course-card[data-course-id="${courseId}"]`);
                 if (courseCard) {
                     courseCard.style.opacity = '0';
@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(() => {
                         courseCard.remove();
                         
-                        // Show empty state if no courses left
+                          
                         if (courseList && courseList.children.length === 0) {
                             const emptyState = document.createElement('div');
                             emptyState.className = 'empty-state';
@@ -267,17 +267,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 deleteModal.style.display = 'none';
                 
-                // Show success message
+                  
                 showNotification('Course deleted successfully', 'success');
             })
             .catch(error => {
                 console.error('Error deleting course:', error);
                 
-                // Show error in modal
+                  
                 confirmDeleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete Course';
                 confirmDeleteButton.disabled = false;
                 
-                // Show error notification
+                  
                 showNotification('Failed to delete course', 'error');
             });
     }
@@ -290,7 +290,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <span>${message}</span>
         `;
         
-        // Style the notification
+          
         Object.assign(notification.style, {
             position: 'fixed',
             bottom: '20px',
@@ -311,13 +311,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         document.body.appendChild(notification);
         
-        // Animate in
+          
         setTimeout(() => {
             notification.style.opacity = '1';
             notification.style.transform = 'translateY(0)';
         }, 10);
         
-        // Remove after delay
+          
         setTimeout(() => {
             notification.style.opacity = '0';
             notification.style.transform = 'translateY(20px)';

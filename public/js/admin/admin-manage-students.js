@@ -1,7 +1,7 @@
-// Make sure the remove button functionality is working properly
+  
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Elements
+      
     const studentSearch = document.getElementById('student-search');
     const departmentFilter = document.getElementById('department-filter');
     const semesterFilter = document.getElementById('semester-filter');
@@ -12,10 +12,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeModalBtn = document.querySelector('.close-modal');
     const alertCloseButtons = document.querySelectorAll('.close-alert');
     
-    // Store the form being submitted
+      
     let activeForm = null;
     
-    // Event Listeners
+      
     if (studentSearch) {
         studentSearch.addEventListener('input', filterStudents);
     }
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
         semesterFilter.addEventListener('change', filterStudents);
     }
     
-    // Set up remove course confirmation
+      
     const removeForms = document.querySelectorAll('.remove-course-form');
     removeForms.forEach(form => {
         form.addEventListener('submit', function(e) {
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Modal event listeners
+      
     if (closeModalBtn) {
         closeModalBtn.addEventListener('click', hideModal);
     }
@@ -51,14 +51,14 @@ document.addEventListener('DOMContentLoaded', function() {
         confirmActionBtn.addEventListener('click', confirmRemoveCourse);
     }
     
-    // Click outside to close modal
+      
     window.addEventListener('click', function(e) {
         if (e.target === confirmationModal) {
             hideModal();
         }
     });
     
-    // Close alerts
+      
     if (alertCloseButtons) {
         alertCloseButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Functions
+      
     function filterStudents() {
         const searchTerm = studentSearch ? studentSearch.value.toLowerCase() : '';
         const department = departmentFilter ? departmentFilter.value : '';
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const studentDept = card.dataset.dept;
             const studentSemester = card.dataset.semester;
             
-            // Check if card matches all active filters
+              
             let nameMatch = !searchTerm || 
                 studentName.includes(searchTerm) || 
                 studentRoll.includes(searchTerm);
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Show empty state if no results
+          
         checkForEmptyResults();
     }
     
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Check if empty state already exists
+          
         let emptyResults = studentGrid.querySelector('.empty-results');
         
         if (visibleCards === 0) {
@@ -132,14 +132,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
                 studentGrid.appendChild(emptyResults);
                 
-                // Add reset button event
+                  
                 const resetBtn = emptyResults.querySelector('#reset-filters');
                 if (resetBtn) {
                     resetBtn.addEventListener('click', resetFilters);
                 }
             }
         } else if (emptyResults) {
-            // Remove empty results message if there are matches
+              
             emptyResults.remove();
         }
     }
@@ -167,11 +167,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function confirmRemoveCourse() {
         if (activeForm) {
-            // Add loading state to button
+              
             confirmActionBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Removing...';
             confirmActionBtn.disabled = true;
             
-            // Submit the form
+              
             activeForm.submit();
         }
     }

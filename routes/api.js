@@ -4,7 +4,7 @@ const Student = require('../models/Student');
 const Course = require('../models/Course');
 const { requireAdminLogin, requireStudentLogin } = require('../middleware/sessionMiddleware');
 
-// Get all courses
+  
 router.get('/courses', async (req, res) => {
     try {
         const courses = await Course.find().populate('prerequisites');
@@ -15,7 +15,7 @@ router.get('/courses', async (req, res) => {
     }
 });
 
-// Get specific course
+  
 router.get('/courses/:id', async (req, res) => {
     try {
         const course = await Course.findById(req.params.id).populate('prerequisites');
@@ -29,7 +29,7 @@ router.get('/courses/:id', async (req, res) => {
     }
 });
 
-// Get all students
+  
 router.get('/students', requireAdminLogin, async (req, res) => {
     try {
         const students = await Student.find().populate('courses');
@@ -40,31 +40,31 @@ router.get('/students', requireAdminLogin, async (req, res) => {
     }
 });
 
-// Add this handler if it's not already present:
+  
 
-// Create new student
+  
 router.post('/students', requireAdminLogin, async (req, res) => {
     try {
         const { name, rollNumber, email, department, semester } = req.body;
         
-        // Validate required fields
+          
         if (!name || !rollNumber || !email || !department || !semester) {
             return res.status(400).json({ message: 'All fields are required' });
         }
         
-        // Check if roll number already exists
+          
         const existingStudent = await Student.findOne({ rollNumber });
         if (existingStudent) {
             return res.status(400).json({ message: 'Student with this roll number already exists' });
         }
         
-        // Check if email already exists
+          
         const emailExists = await Student.findOne({ email });
         if (emailExists) {
             return res.status(400).json({ message: 'Student with this email already exists' });
         }
         
-        // Create new student
+          
         const student = new Student({
             name,
             rollNumber,
@@ -84,7 +84,7 @@ router.post('/students', requireAdminLogin, async (req, res) => {
     }
 });
 
-// Update student information
+  
 router.put('/students/:id', requireAdminLogin, async (req, res) => {
     try {
         const { name, rollNumber, email, department, semester } = req.body;
@@ -94,7 +94,7 @@ router.put('/students/:id', requireAdminLogin, async (req, res) => {
             return res.status(404).json({ message: 'Student not found' });
         }
         
-        // Check if roll number is already in use by another student
+          
         if (rollNumber !== student.rollNumber) {
             const existingStudent = await Student.findOne({ rollNumber });
             if (existingStudent) {
@@ -102,7 +102,7 @@ router.put('/students/:id', requireAdminLogin, async (req, res) => {
             }
         }
         
-        // Update student information
+          
         student.name = name;
         student.rollNumber = rollNumber;
         student.email = email;
@@ -118,7 +118,7 @@ router.put('/students/:id', requireAdminLogin, async (req, res) => {
     }
 });
 
-// Remove course from student's schedule (for logged-in student)
+  
 router.post('/students/remove-course', requireStudentLogin, async (req, res) => {
     try {
         const { courseId } = req.body;
@@ -131,7 +131,7 @@ router.post('/students/remove-course', requireStudentLogin, async (req, res) => 
             });
         }
         
-        // Get the student and course
+          
         const student = await Student.findById(studentId);
         const course = await Course.findById(courseId);
         
@@ -142,7 +142,7 @@ router.post('/students/remove-course', requireStudentLogin, async (req, res) => 
             });
         }
         
-        // Check if course is in student's schedule
+          
         if (!student.courses.includes(courseId)) {
             return res.status(400).json({ 
                 success: false,
@@ -150,13 +150,13 @@ router.post('/students/remove-course', requireStudentLogin, async (req, res) => 
             });
         }
         
-        // Remove the course from student's schedule
+          
         student.courses = student.courses.filter(id => 
             id.toString() !== courseId.toString()
         );
         await student.save();
         
-        // Update course availability
+          
         course.seatsAvailable += 1;
         await course.save();
         
@@ -173,13 +173,13 @@ router.post('/students/remove-course', requireStudentLogin, async (req, res) => 
     }
 });
 
-// Remove course from student (admin only)
+  
 router.post('/students/:id/remove-course', requireAdminLogin, async (req, res) => {
     try {
         const { courseId } = req.body;
         const studentId = req.params.id;
         
-        // Find student and course
+          
         const student = await Student.findById(studentId);
         const course = await Course.findById(courseId);
         
@@ -187,16 +187,16 @@ router.post('/students/:id/remove-course', requireAdminLogin, async (req, res) =
             return res.redirect('/admin/manage-students?error=Student or course not found');
         }
         
-        // Check if course is in student's list
+          
         if (!student.courses.includes(courseId)) {
             return res.redirect(`/admin/student/${studentId}?error=Student not registered for this course`);
         }
         
-        // Remove course from student
+          
         student.courses = student.courses.filter(id => id.toString() !== courseId.toString());
         await student.save();
         
-        // Update course seat availability
+          
         course.seatsAvailable += 1;
         await course.save();
         
@@ -207,13 +207,13 @@ router.post('/students/:id/remove-course', requireAdminLogin, async (req, res) =
     }
 });
 
-// Add course to student (admin only)
+  
 router.post('/students/:id/add-course', requireAdminLogin, async (req, res) => {
     try {
         const { courseId } = req.body;
         const studentId = req.params.id;
         
-        // Find student and course
+          
         const student = await Student.findById(studentId);
         const course = await Course.findById(courseId);
         
@@ -221,21 +221,21 @@ router.post('/students/:id/add-course', requireAdminLogin, async (req, res) => {
             return res.redirect('/admin/manage-students?error=Student or course not found');
         }
         
-        // Check if student already registered for this course
+          
         if (student.courses.includes(courseId)) {
             return res.redirect(`/admin/student/${studentId}?error=Student already registered for this course`);
         }
         
-        // Check if seats available
+          
         if (course.seatsAvailable <= 0) {
             return res.redirect(`/admin/student/${studentId}?error=No seats available for this course`);
         }
         
-        // Add course to student
+          
         student.courses.push(courseId);
         await student.save();
         
-        // Update course seat availability
+          
         course.seatsAvailable -= 1;
         await course.save();
         

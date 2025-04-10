@@ -103,16 +103,11 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Fetch dashboard stats
             fetchDashboardStats();
-            
-            // Load chart data
             loadCharts();
             
-            // Load recent activities
             loadRecentActivities();
             
-            // Animation for stats cards
             const statCards = document.querySelectorAll('.stat-card');
             statCards.forEach((card, index) => {
                 setTimeout(() => {
@@ -131,21 +126,17 @@
                 const courses = await coursesResponse.json();
                 const students = await studentsResponse.json();
                 
-                // Update stats
                 document.getElementById('total-courses').textContent = courses.length;
                 document.getElementById('total-students').textContent = students.length;
                 
-                // Calculate available seats
                 const availableSeats = courses.reduce((total, course) => total + course.seatsAvailable, 0);
                 document.getElementById('available-seats').textContent = availableSeats;
                 
-                // Calculate students with prerequisite issues
                 let studentsWithIssues = 0;
                 students.forEach(student => {
                     if (student.courses && student.courses.length > 0) {
                         student.courses.forEach(course => {
                             if (course.prerequisites && course.prerequisites.length > 0) {
-                                // This is simplified - in a real app you'd check if the student has the prerequisites
                                 if (!studentHasPrerequisites(student, course)) {
                                     studentsWithIssues++;
                                     return;
@@ -162,9 +153,8 @@
             }
         }
         
-        // Simplified function - in a real app you'd check against the completed courses
         function studentHasPrerequisites(student, course) {
-            return true; // Assume all are met for demo
+            return true; 
         }
         
         async function loadCharts() {
@@ -177,7 +167,6 @@
                 const courses = await coursesResponse.json();
                 const students = await studentsResponse.json();
                 
-                // Course registration chart
                 const registrationData = {};
                 courses.forEach(course => {
                     const available = course.seatsAvailable;
@@ -224,7 +213,6 @@
                     }
                 });
                 
-                // Department distribution chart
                 const departments = {};
                 students.forEach(student => {
                     if (!departments[student.department]) {
@@ -258,8 +246,6 @@
         }
         
         function loadRecentActivities() {
-            // This would normally fetch from a real activity log
-            // For demo, we'll use placeholder data
             const activities = [
                 { 
                     action: 'Course Updated', 

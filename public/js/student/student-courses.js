@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Elements
+      
     const courseList = document.getElementById('course-list');
     const tempScheduleList = document.getElementById('temp-schedule-list');
     const clearTempBtn = document.getElementById('clear-temp');
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeDetailsBtn = document.getElementById('close-details');
     const courseCount = document.getElementById('course-count');
     
-    // Filter elements
+      
     const departmentFilter = document.getElementById('department-filter');
     const levelFilter = document.getElementById('level-filter');
     const dayFilter = document.getElementById('day-filter');
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const applyFiltersBtn = document.getElementById('apply-filters');
     const resetFiltersBtn = document.getElementById('reset-filters');
     
-    // Modal elements
+      
     const modalContainer = document.getElementById('modal-container');
     const modalTitle = document.getElementById('modal-title');
     const modalContent = document.getElementById('modal-content');
@@ -29,20 +29,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalCancelBtn = document.getElementById('modal-cancel');
     const closeModalBtn = document.getElementById('close-modal');
     
-    // Store original courses for filtering
+      
     let originalCourses = [];
     if (courseList) {
         originalCourses = Array.from(courseList.children);
     }
     
-    // Initialize temporary schedule
+      
     let temporarySchedule = [];
     let temporaryCourseObjects = [];
     
-    // Load temporary schedule from server
+      
     loadTemporarySchedule();
     
-    // Event Listeners
+      
     if (viewScheduleBtn) {
         viewScheduleBtn.addEventListener('click', toggleSidePanel);
     }
@@ -65,14 +65,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (searchFilter) {
         searchFilter.addEventListener('input', function(e) {
-            // Real-time search filtering
+              
             if (e.target.value.length >= 2 || e.target.value.length === 0) {
                 applyFilters();
             }
         });
     }
     
-    // Add course to temporary schedule
+      
     if (courseList) {
         courseList.addEventListener('click', function(e) {
             if (e.target.classList.contains('add-temp-btn') && !e.target.disabled) {
@@ -87,14 +87,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Remove course from temporary schedule
+      
     if (tempScheduleList) {
         tempScheduleList.addEventListener('click', function(e) {
             if (e.target.classList.contains('remove-temp-btn')) {
                 const courseId = e.target.getAttribute('data-course-id');
                 removeFromTemporarySchedule(courseId);
                 
-                // Re-enable "Add" button in course list
+                  
                 const addBtn = document.querySelector(`.add-temp-btn[data-course-id="${courseId}"]`);
                 if (addBtn) {
                     addBtn.textContent = 'Add to Schedule';
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Clear temporary schedule
+      
     if (clearTempBtn) {
         clearTempBtn.addEventListener('click', function() {
             showConfirmationModal(
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Submit registration
+      
     if (submitScheduleBtn) {
         submitScheduleBtn.addEventListener('click', function() {
             if (!temporarySchedule.length) {
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Modal event listeners
+      
     if (closeModalBtn) {
         closeModalBtn.addEventListener('click', hideModal);
     }
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
         modalCancelBtn.addEventListener('click', hideModal);
     }
     
-    // Functions
+      
     function loadTemporarySchedule() {
         fetch('/student/temp-schedule')
             .then(response => response.json())
@@ -167,10 +167,10 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.success) {
                     temporarySchedule = data.temporarySchedule;
-                    // Refresh the UI
+                      
                     loadTemporarySchedule();
                     
-                    // Show the side panel
+                      
                     sidePanel.classList.add('show');
                 }
             })
@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.success) {
                     temporarySchedule = data.temporarySchedule;
-                    // Refresh the UI
+                      
                     loadTemporarySchedule();
                 }
             })
@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error clearing temporary schedule:', error));
     }
     
-    // Find the submitRegistration function and update it:
+      
 
 function submitRegistration() {
     fetch('/student/register', {
@@ -296,7 +296,7 @@ function submitRegistration() {
         });
     }
     
-    // Find the function that displays course details and add:
+      
 
 function showCourseDetails(courseId) {
     fetch(`/api/courses/${courseId}`)
@@ -317,7 +317,7 @@ function showCourseDetails(courseId) {
                     </div>
                 `;
                 
-                // Add prerequisites with more noticeable styling
+                  
                 if (course.prerequisites && course.prerequisites.length > 0) {
                     detailsHTML += `
                         <div class="prerequisites-section">
@@ -335,12 +335,12 @@ function showCourseDetails(courseId) {
                 
                 prereqInfoPanel.innerHTML = detailsHTML;
                 
-                // Show the course details panel
+                  
                 if (courseDetailsPanel) {
                     courseDetailsPanel.style.display = 'block';
                 }
                 
-                // Show the side panel if it's not already visible
+                  
                 sidePanel.classList.add('show');
             }
         })
@@ -350,7 +350,7 @@ function showCourseDetails(courseId) {
     function applyFilters() {
         let filteredCourses = [...originalCourses];
         
-        // Apply department filter
+          
         if (departmentFilter && departmentFilter.value) {
             filteredCourses = filteredCourses.filter(course => {
                 const deptElement = course.querySelector('.course-department');
@@ -358,7 +358,7 @@ function showCourseDetails(courseId) {
             });
         }
         
-        // Apply level filter
+          
         if (levelFilter && levelFilter.value) {
             const level = parseInt(levelFilter.value);
             filteredCourses = filteredCourses.filter(course => {
@@ -374,7 +374,7 @@ function showCourseDetails(courseId) {
             });
         }
         
-        // Apply day filter
+          
         if (dayFilter && dayFilter.value !== '') {
             const day = parseInt(dayFilter.value);
             filteredCourses = filteredCourses.filter(course => {
@@ -386,7 +386,7 @@ function showCourseDetails(courseId) {
             });
         }
         
-        // Apply time filter
+          
         if (timeFilter && timeFilter.value) {
             const timeRange = timeFilter.value;
             filteredCourses = filteredCourses.filter(course => {
@@ -405,7 +405,7 @@ function showCourseDetails(courseId) {
             });
         }
         
-        // Apply seats filter
+          
         if (seatsFilter && seatsFilter.checked) {
             filteredCourses = filteredCourses.filter(course => {
                 const seatsElement = course.querySelector('.seats-available');
@@ -416,7 +416,7 @@ function showCourseDetails(courseId) {
             });
         }
         
-        // Apply search filter
+          
         if (searchFilter && searchFilter.value.trim()) {
             const searchTerm = searchFilter.value.trim().toLowerCase();
             filteredCourses = filteredCourses.filter(course => {
@@ -438,17 +438,17 @@ function showCourseDetails(courseId) {
             });
         }
         
-        // Update course count
+          
         if (courseCount) {
             courseCount.textContent = filteredCourses.length;
         }
         
-        // Display filtered courses
+          
         displayCourses(filteredCourses);
     }
     
     function resetFilters() {
-        // Reset all filter controls
+          
         if (departmentFilter) departmentFilter.value = '';
         if (levelFilter) levelFilter.value = '';
         if (dayFilter) dayFilter.value = '';
@@ -456,10 +456,10 @@ function showCourseDetails(courseId) {
         if (seatsFilter) seatsFilter.checked = false;
         if (searchFilter) searchFilter.value = '';
         
-        // Show all courses
+          
         displayCourses(originalCourses);
         
-        // Update course count
+          
         if (courseCount) {
             courseCount.textContent = originalCourses.length;
         }
@@ -486,7 +486,7 @@ function showCourseDetails(courseId) {
             courseList.appendChild(course.cloneNode(true));
         });
         
-        // Update add buttons
+          
         updateAddButtons();
     }
     
@@ -519,7 +519,7 @@ function showCourseDetails(courseId) {
         modalTitle.textContent = title;
         modalContent.innerHTML = message;
         
-        // Hide confirm button for info modals
+          
         if (callback) {
             modalConfirmBtn.style.display = 'inline-block';
             modalConfirmBtn.onclick = function() {

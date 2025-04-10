@@ -12,7 +12,7 @@ body {
     padding: 20px;
 }
 
-/* Header Styles */
+ 
 .schedule-header {
     display: flex;
     justify-content: space-between;
@@ -105,7 +105,7 @@ body {
     font-size: 16px;
 }
 
-/* Warning Box */
+ 
 .conflict-warning {
     display: flex;
     align-items: center;
@@ -134,7 +134,7 @@ body {
     color: #742a2a;
 }
 
-/* Schedule Grid */
+ 
 .schedule-grid-wrapper {
     overflow-x: auto;
     background: white;
@@ -185,7 +185,7 @@ body {
     overflow: hidden;
 }
 
-/* Course Styles */
+ 
 .course-card {
     background: linear-gradient(135deg, #e0f7fa 0%, #b3e5fc 100%);
     border-radius: 8px;
@@ -259,7 +259,7 @@ body {
     color: white;
 }
 
-/* Details Panel */
+ 
 .course-details-panel {
     background: white;
     border-radius: 12px;
@@ -340,13 +340,13 @@ body {
     margin-top: 20px;
 }
 
-/* Animations */
+ 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive Styles */
+ 
 @media (max-width: 768px) {
     .schedule-container {
         padding: 15px;

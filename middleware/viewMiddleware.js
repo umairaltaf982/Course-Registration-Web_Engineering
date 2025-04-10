@@ -1,11 +1,6 @@
-/**
- * Middleware to add user info to views based on session data
- */
 exports.addUserToViews = (req, res, next) => {
-    // Set default user to null (not logged in)
     res.locals.user = null;
     
-    // If student is logged in
     if (req.session && req.session.studentId) {
         res.locals.user = {
             id: req.session.studentId,
@@ -15,7 +10,6 @@ exports.addUserToViews = (req, res, next) => {
         };
     }
     
-    // If admin is logged in
     else if (req.session && req.session.adminId) {
         res.locals.user = {
             id: req.session.adminId,
