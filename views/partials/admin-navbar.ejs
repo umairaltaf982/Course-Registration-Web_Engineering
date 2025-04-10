@@ -1,18 +1,43 @@
-<nav class="main-nav admin-nav">
+<nav class="admin-nav">
     <div class="nav-brand">
         <a href="/admin/dashboard">
-            <i class="fas fa-university"></i> Course Registration Admin
+            <i class="fas fa-university"></i>
+            <span>Course Registration Admin</span>
         </a>
     </div>
     
     <ul class="nav-links">
-        <li><a href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-        <li><a href="/admin/manage-courses"><i class="fas fa-book"></i> Manage Courses</a></li>
-        <li><a href="/admin/manage-students"><i class="fas fa-user-graduate"></i> Manage Students</a></li>
-        <li><a href="/admin/reports"><i class="fas fa-chart-bar"></i> Reports</a></li>
+        <li>
+            <a href="/admin/dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="/admin/manage-courses">
+                <i class="fas fa-book"></i>
+                <span>Manage Courses</span>
+            </a>
+        </li>
+        <li>
+            <a href="/admin/manage-students">
+                <i class="fas fa-user-graduate"></i>
+                <span>Manage Students</span>
+            </a>
+        </li>
+        <li>
+            <a href="/admin/reports">
+                <i class="fas fa-chart-bar"></i>
+                <span>Reports</span>
+            </a>
+        </li>
         <li class="user-info">
-            <span class="admin-badge">Admin</span> <%= user.name %>
-            <a href="/auth/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            <span class="admin-badge">Admin</span>
+            <span class="user-name"><%= user.name %></span>
+            <a href="/auth/logout" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
         </li>
     </ul>
 </nav>

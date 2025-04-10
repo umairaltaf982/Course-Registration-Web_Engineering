@@ -1,48 +1,107 @@
  
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Admin Navigation Bar */
 .admin-nav {
     background: linear-gradient(90deg, #2c3e50, #4b6cb7);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
     border-bottom: 3px solid #f39c12;
 }
 
 .admin-nav .nav-brand a {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 20px;
+    gap: 12px;
     color: white;
+    text-decoration: none;
+    font-size: 1.4rem;
+    font-weight: 600;
 }
 
-.admin-nav .nav-links a {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 12px;
-    border-radius: 4px;
-    transition: all 0.3s;
-}
-
-.admin-nav .nav-links a:hover {
-    background: rgba(255, 255, 255, 0.1);
+.admin-nav .nav-brand i {
+    font-size: 1.6rem;
     color: #f39c12;
 }
 
-.admin-nav .nav-links a::after {
-    display: none;
+.admin-nav .nav-links {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-nav .nav-links li a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    text-decoration: none;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.admin-nav .nav-links li a i {
+    font-size: 1.1rem;
+    color: #f39c12;
+}
+
+.admin-nav .nav-links li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+/* User Info Section */
+.admin-nav .user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: 1rem;
+    padding-left: 1rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .admin-badge {
     background-color: #f39c12;
     color: #2c3e50;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 12px;
-    font-weight: bold;
-    margin-right: 10px;
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.user-name {
+    color: white;
+    font-weight: 500;
 }
 
 .admin-nav .logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     background: rgba(243, 156, 18, 0.2);
-    transition: all 0.3s;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
 .admin-nav .logout-btn:hover {
@@ -50,13 +109,63 @@
     color: #2c3e50;
 }
 
+/* Responsive Design */
 @media (max-width: 768px) {
-    .admin-nav .nav-links a {
+    .admin-nav {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .admin-nav .nav-brand {
+        margin-bottom: 1rem;
+    }
+
+    .admin-nav .nav-links {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .admin-nav .nav-links li {
+        width: 100%;
+    }
+
+    .admin-nav .nav-links li a {
         justify-content: center;
+        width: 100%;
+        padding: 0.8rem;
     }
-    
-    .admin-badge {
-        margin-right: 0;
-        margin-bottom: 5px;
+
+    .admin-nav .user-info {
+        flex-direction: column;
+        margin: 1rem 0 0 0;
+        padding: 1rem 0 0 0;
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        width: 100%;
+        align-items: center;
     }
+
+    .admin-nav .logout-btn {
+        width: 100%;
+        justify-content: center;
+        margin-top: 0.5rem;
+    }
+}
+
+/* Animation for hover effects */
+@keyframes buttonPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.admin-nav .nav-links li a:active {
+    animation: buttonPulse 0.3s ease;
 }

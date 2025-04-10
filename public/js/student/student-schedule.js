@@ -20,14 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
           
         setupRemoveButtons();
         setupCourseDetailView();
+        initializePrint();
         
           
-        if (printButton) {
-            printButton.addEventListener('click', function() {
-                window.print();
-            });
-        }
-        
         if (saveButton) {
             saveButton.addEventListener('click', function() {
                 savePermanentSchedule();
@@ -37,6 +32,22 @@ document.addEventListener('DOMContentLoaded', function() {
         if (closeDetailsBtn) {
             closeDetailsBtn.addEventListener('click', function() {
                 courseDetailPanel.style.display = 'none';
+            });
+        }
+    }
+    
+    function initializePrint() {
+        if (printButton) {
+            printButton.addEventListener('click', function() {
+                // Hide any open panels or modals
+                if (courseDetailPanel) {
+                    courseDetailPanel.style.display = 'none';
+                }
+                
+                // Small delay to ensure styles are applied
+                setTimeout(() => {
+                    window.print();
+                }, 100);
             });
         }
     }

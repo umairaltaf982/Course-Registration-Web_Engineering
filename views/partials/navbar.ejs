@@ -13,17 +13,7 @@
                 <a href="/auth/logout" class="logout-btn">Logout</a>
             </li>
         </ul>
-    <% } else if (user && user.role === 'admin') { %>
-        <ul class="nav-links">
-            <li><a href="/admin/dashboard">Dashboard</a></li>
-            <li><a href="/admin/manage-courses">Manage Courses</a></li>
-            <li><a href="/admin/manage-students">Manage Students</a></li>
-            <li><a href="/admin/reports">Reports</a></li>
-            <li class="user-info">
-                Admin: <%= user.name %>
-                <a href="/auth/logout" class="logout-btn">Logout</a>
-            </li>
-        </ul>
+    
     <% } else { %>
         <ul class="nav-links">
             <li><a href="/auth/student-login">Student Login</a></li>

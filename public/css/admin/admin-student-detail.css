@@ -1,0 +1,268 @@
+/* Main Container */
+.container {
+    max-width: 1200px;
+    margin: 80px auto 40px;
+    padding: 25px;
+}
+
+/* Page Header */
+h2 {
+    font-size: 28px;
+    color: #2a3f54;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Alert Messages */
+.alert {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alert-danger {
+    background-color: #ffe4e4;
+    color: #c53030;
+    border-left: 4px solid #e53e3e;
+}
+
+.alert-success {
+    background-color: #e6ffec;
+    color: #276749;
+    border-left: 4px solid #48bb78;
+}
+
+/* Student Information Card */
+.student-info {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.student-info h3 {
+    font-size: 24px;
+    color: #2a3f54;
+    margin: 0 0 20px 0;
+}
+
+.student-info p {
+    margin: 12px 0;
+    color: #4a5568;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.student-info strong {
+    min-width: 120px;
+    color: #2a5298;
+}
+
+/* Course Sections */
+h3 {
+    font-size: 20px;
+    color: #2a3f54;
+    margin: 30px 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Course List */
+.course-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.course-list li {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 15px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-list li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Course Information */
+.course-info {
+    flex: 1;
+}
+
+.course-info strong {
+    display: block;
+    font-size: 18px;
+    color: #2a5298;
+    margin-bottom: 10px;
+}
+
+.course-info p {
+    margin: 5px 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* Add Course Form */
+.add-course-form {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+    margin: 20px 0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #4a5568;
+    font-weight: 500;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 15px;
+    color: #4a5568;
+    background-color: white;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: #2a5298;
+    box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    border: none;
+}
+
+.submit-btn {
+    background: linear-gradient(45deg, #2a5298, #1e3c72);
+    color: white;
+    box-shadow: 0 2px 6px rgba(46, 49, 137, 0.15);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(46, 49, 137, 0.2);
+}
+
+button[type="submit"] {
+    background: #ef4444;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button[type="submit"]:hover {
+    background: #dc2626;
+}
+
+/* Button Group */
+.button-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.button-group .btn {
+    flex: 1;
+    justify-content: center;
+    background: linear-gradient(45deg, #2a5298, #1e3c72);
+    transform: translateY(-2px);
+    color:white;
+    box-shadow: 0 6px 20px rgba(237, 137, 54, 0.3);};
+
+/* Empty State */
+p:empty {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    color: #64748b;
+    font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+        margin-top: 60px;
+    }
+
+    .student-info {
+        padding: 20px;
+    }
+
+    .course-list li {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .course-info {
+        width: 100%;
+    }
+
+    form {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container {
+    animation: fadeIn 0.3s ease-out;
+}
