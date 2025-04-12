@@ -225,7 +225,7 @@ router.get('/api/courses/departments', async (req, res) => {
     }
 });
 
-// Notifications route
+
 router.get('/notifications', requireStudentLogin, async (req, res) => {
     try {
         const student = await Student.findById(req.session.studentId)
@@ -237,7 +237,7 @@ router.get('/notifications', requireStudentLogin, async (req, res) => {
                 }
             });
 
-        // Mark notifications as read
+        
         if (student.hasUnreadNotifications) {
             student.hasUnreadNotifications = false;
             await student.save();
@@ -253,13 +253,13 @@ router.get('/notifications', requireStudentLogin, async (req, res) => {
     }
 });
 
-// Subscribe to course route
+
 router.post('/subscribe', requireStudentLogin, async (req, res) => {
     try {
         const { courseId } = req.body;
         const studentId = req.session.studentId;
 
-        // Check if already subscribed
+        
         const existingSubscription = await Subscription.findOne({
             student: studentId,
             course: courseId
@@ -272,7 +272,7 @@ router.post('/subscribe', requireStudentLogin, async (req, res) => {
             });
         }
 
-        // Create new subscription
+        
         const subscription = new Subscription({
             student: studentId,
             course: courseId
@@ -280,7 +280,7 @@ router.post('/subscribe', requireStudentLogin, async (req, res) => {
 
         await subscription.save();
 
-        // Add subscription to student
+        
         const student = await Student.findById(studentId);
         student.subscriptions.push(subscription._id);
         await student.save();
@@ -295,13 +295,13 @@ router.post('/subscribe', requireStudentLogin, async (req, res) => {
     }
 });
 
-// Unsubscribe from course route
+
 router.post('/unsubscribe', requireStudentLogin, async (req, res) => {
     try {
         const { subscriptionId } = req.body;
         const studentId = req.session.studentId;
 
-        // Find the subscription
+        
         const subscription = await Subscription.findById(subscriptionId);
 
         if (!subscription) {
@@ -311,7 +311,7 @@ router.post('/unsubscribe', requireStudentLogin, async (req, res) => {
             });
         }
 
-        // Check if the subscription belongs to the student
+        
         if (subscription.student.toString() !== studentId) {
             return res.json({
                 success: false,
@@ -319,14 +319,14 @@ router.post('/unsubscribe', requireStudentLogin, async (req, res) => {
             });
         }
 
-        // Remove subscription from student
+        
         const student = await Student.findById(studentId);
         student.subscriptions = student.subscriptions.filter(
             sub => sub.toString() !== subscriptionId
         );
         await student.save();
 
-        // Delete the subscription
+        
         await Subscription.findByIdAndDelete(subscriptionId);
 
         res.json({

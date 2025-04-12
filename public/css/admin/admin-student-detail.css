@@ -1,11 +1,11 @@
-/* Main Container */
+
 .container {
     max-width: 1200px;
     margin: 80px auto 40px;
     padding: 25px;
 }
 
-/* Page Header */
+
 h2 {
     font-size: 28px;
     color: #2a3f54;
@@ -15,7 +15,7 @@ h2 {
     gap: 10px;
 }
 
-/* Alert Messages */
+
 .alert {
     padding: 15px;
     border-radius: 8px;
@@ -37,7 +37,7 @@ h2 {
     border-left: 4px solid #48bb78;
 }
 
-/* Student Information Card */
+
 .student-info {
     background: white;
     border-radius: 10px;
@@ -66,7 +66,7 @@ h2 {
     color: #2a5298;
 }
 
-/* Course Sections */
+
 h3 {
     font-size: 20px;
     color: #2a3f54;
@@ -76,7 +76,7 @@ h3 {
     gap: 10px;
 }
 
-/* Course List */
+
 .course-list {
     list-style: none;
     padding: 0;
@@ -100,7 +100,7 @@ h3 {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Course Information */
+
 .course-info {
     flex: 1;
 }
@@ -118,7 +118,7 @@ h3 {
     font-size: 14px;
 }
 
-/* Add Course Form */
+
 .add-course-form {
     background: white;
     border-radius: 10px;
@@ -155,7 +155,7 @@ h3 {
     box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
 }
 
-/* Buttons */
+
 .btn {
     display: inline-flex;
     align-items: center;
@@ -195,7 +195,7 @@ button[type="submit"]:hover {
     background: #dc2626;
 }
 
-/* Button Group */
+
 .button-group {
     display: flex;
     gap: 15px;
@@ -210,7 +210,7 @@ button[type="submit"]:hover {
     color:white;
     box-shadow: 0 6px 20px rgba(237, 137, 54, 0.3);};
 
-/* Empty State */
+
 p:empty {
     background: #f8fafc;
     padding: 20px;
@@ -220,7 +220,7 @@ p:empty {
     font-style: italic;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .container {
         padding: 15px;
@@ -251,7 +251,7 @@ p:empty {
     }
 }
 
-/* Animations */
+
 @keyframes fadeIn {
     from {
         opacity: 0;

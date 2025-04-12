@@ -39,12 +39,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function initializePrint() {
         if (printButton) {
             printButton.addEventListener('click', function() {
-                // Hide any open panels or modals
+                
                 if (courseDetailPanel) {
                     courseDetailPanel.style.display = 'none';
                 }
                 
-                // Small delay to ensure styles are applied
+                
                 setTimeout(() => {
                     window.print();
                 }, 100);

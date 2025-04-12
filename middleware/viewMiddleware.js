@@ -4,7 +4,7 @@ exports.addUserToViews = async (req, res, next) => {
     res.locals.user = null;
 
     if (req.session && req.session.studentId) {
-        // Get the student to check for unread notifications
+        
         try {
             const student = await Student.findById(req.session.studentId);
 
@@ -18,7 +18,7 @@ exports.addUserToViews = async (req, res, next) => {
         } catch (error) {
             console.error('Error fetching student data for navbar:', error);
 
-            // Fallback if there's an error
+            
             res.locals.user = {
                 id: req.session.studentId,
                 name: req.session.studentName,

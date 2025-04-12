@@ -21,7 +21,7 @@ const SubscriptionSchema = new mongoose.Schema({
     }
 });
 
-// Compound index to ensure a student can only subscribe once to a course
+
 SubscriptionSchema.index({ student: 1, course: 1 }, { unique: true });
 
 module.exports = mongoose.model('Subscription', SubscriptionSchema);

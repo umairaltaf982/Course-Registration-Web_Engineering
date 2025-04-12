@@ -1,18 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Get all subscribe buttons
+    
     const subscribeButtons = document.querySelectorAll('.subscribe-btn');
 
-    // Add click event listener to each subscribe button
+    
     subscribeButtons.forEach(button => {
         button.addEventListener('click', function() {
             const courseId = this.getAttribute('data-course-id');
             const button = this;
 
-            // Change button text and style to indicate subscription in progress
+            
             button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subscribing...';
             button.disabled = true;
 
-            // Make AJAX call to subscribe to the course
+            
             fetch('/student/subscribe', {
                 method: 'POST',
                 headers: {
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.success) {
                     button.innerHTML = '<i class="fas fa-check"></i> Subscribed';
-                    button.style.backgroundColor = '#10b981'; // Change to green
+                    button.style.backgroundColor = '#10b981'; 
                     showNotification('You will be notified when a seat becomes available', 'success');
                 } else {
                     button.innerHTML = '<i class="fas fa-bell"></i> Subscribe';
@@ -41,20 +41,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Get all unsubscribe buttons
+    
     const unsubscribeButtons = document.querySelectorAll('.unsubscribe-btn');
 
-    // Add click event listener to each unsubscribe button
+    
     unsubscribeButtons.forEach(button => {
         button.addEventListener('click', function() {
             const subscriptionId = this.getAttribute('data-subscription-id');
             const card = this.closest('.subscription-card');
 
-            // Change button text and style to indicate unsubscription in progress
+            
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Unsubscribing...';
             this.disabled = true;
 
-            // Make AJAX call to unsubscribe from the course
+            
             fetch('/student/unsubscribe', {
                 method: 'POST',
                 headers: {
@@ -65,16 +65,16 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Remove the card with animation
+                    
                     card.style.opacity = '0';
                     card.style.transform = 'translateY(20px)';
                     setTimeout(() => {
                         card.remove();
 
-                        // Check if there are no more subscriptions
+                        
                         const remainingCards = document.querySelectorAll('.subscription-card');
                         if (remainingCards.length === 0) {
-                            // Show the no notifications message
+                            
                             const container = document.querySelector('.notifications-container');
                             container.innerHTML = `
                                 <div class="no-notifications">
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Function to show notification
+    
     function showNotification(message, type) {
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <span>${message}</span>
         `;
 
-        // Style the notification
+        
         Object.assign(notification.style, {
             position: 'fixed',
             bottom: '20px',
@@ -131,21 +131,21 @@ document.addEventListener('DOMContentLoaded', function() {
             transition: 'all 0.3s ease-out'
         });
 
-        // Add to DOM
+        
         document.body.appendChild(notification);
 
-        // Trigger animation
+        
         setTimeout(() => {
             notification.style.opacity = '1';
             notification.style.transform = 'translateY(0)';
         }, 10);
 
-        // Remove after 4 seconds
+        
         setTimeout(() => {
             notification.style.opacity = '0';
             notification.style.transform = 'translateY(20px)';
 
-            // Remove from DOM after animation completes
+            
             setTimeout(() => {
                 document.body.removeChild(notification);
             }, 300);

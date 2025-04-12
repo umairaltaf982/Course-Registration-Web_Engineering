@@ -1,12 +1,12 @@
  
-/* Reset default styles */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Admin Navigation Bar */
+
 .admin-nav {
     background: linear-gradient(90deg, #2c3e50, #4b6cb7);
     display: flex;
@@ -67,7 +67,7 @@
     transform: translateY(-2px);
 }
 
-/* User Info Section */
+
 .admin-nav .user-info {
     display: flex;
     align-items: center;
@@ -109,7 +109,7 @@
     color: #2c3e50;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .admin-nav {
         flex-direction: column;
@@ -153,7 +153,7 @@
     }
 }
 
-/* Animation for hover effects */
+
 @keyframes buttonPulse {
     0% {
         transform: scale(1);

@@ -145,7 +145,7 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Print button functionality
+            
             const printBtn = document.getElementById('print-report');
             if (printBtn) {
                 printBtn.addEventListener('click', function() {
@@ -153,7 +153,7 @@
                 });
             }
             
-            // Course stats chart
+            
             const courseCtx = document.getElementById('courseStats').getContext('2d');
             new Chart(courseCtx, {
                 type: 'bar',
@@ -187,7 +187,7 @@
                 }
             });
             
-            // Department stats chart
+            
             const deptCtx = document.getElementById('departmentStats').getContext('2d');
             new Chart(deptCtx, {
                 type: 'pie',

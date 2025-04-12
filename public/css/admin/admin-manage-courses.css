@@ -9,7 +9,7 @@ body {
 
 .dashboard-container {
     max-width: 1200px;
-    margin: 100px auto 40px; /* Increased top margin to account for fixed navbar */
+    margin: 100px auto 40px; 
     padding: 20px;
     animation: fadeIn 0.3s ease-in;
 }
@@ -140,7 +140,7 @@ body {
     color: #3b82f6;
 }
 
-/* Form Styles */
+
 .course-form {
     padding: 20px;
 }
@@ -307,7 +307,7 @@ input:focus, select:focus, textarea:focus {
     color: #3b82f6;
 }
 
-/* Course Actions */
+
 .course-actions {
     display: flex;
     gap: 10px;
@@ -320,7 +320,7 @@ input:focus, select:focus, textarea:focus {
     flex: 1;
 }
 
-/* Animations */
+
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -383,7 +383,7 @@ input:focus, select:focus, textarea:focus {
     }
 }
 
-/* Empty State */
+
 .empty-state {
     text-align: center;
     padding: 40px 20px;
@@ -401,7 +401,7 @@ input:focus, select:focus, textarea:focus {
     margin: 0;
 }
 
-/* Alert Messages */
+
 .alert {
     padding: 12px 16px;
     border-radius: 8px;
@@ -423,7 +423,7 @@ input:focus, select:focus, textarea:focus {
     border: 1px solid #fca5a5;
 }
 
-/* Search Bar */
+
 .search-container {
     position: relative;
     margin-bottom: 20px;
@@ -445,7 +445,7 @@ input:focus, select:focus, textarea:focus {
     color: #94a3b8;
 }
 
-/* Loading States */
+
 .loading-skeleton {
     background: #e2e8f0;
     border-radius: 4px;
@@ -464,7 +464,7 @@ input:focus, select:focus, textarea:focus {
     }
 }
 
-/* Table Styles */
+
 .courses-table {
     width: 100%;
     border-collapse: collapse;
@@ -494,7 +494,7 @@ input:focus, select:focus, textarea:focus {
     color: #4b5563;
 }
 
-/* Status Badges */
+
 .status-badge {
     display: inline-flex;
     align-items: center;
@@ -519,7 +519,7 @@ input:focus, select:focus, textarea:focus {
     color: #92400e;
 }
 
-/* Tooltips */
+
 .tooltip {
     position: relative;
     display: inline-block;
@@ -548,7 +548,7 @@ input:focus, select:focus, textarea:focus {
     transition: opacity 0.3s;
 }
 
-/* Modal Styles */
+
 .modal {
     position: fixed;
     top: 0;
@@ -608,7 +608,7 @@ input:focus, select:focus, textarea:focus {
     padding: 0;
 }
 
-/* Filters Section */
+
 .filters-section {
     background: white;
     border-radius: 12px;
@@ -641,7 +641,7 @@ input:focus, select:focus, textarea:focus {
     font-size: 14px;
 }
 
-/* Pagination */
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -677,7 +677,7 @@ input:focus, select:focus, textarea:focus {
     cursor: not-allowed;
 }
 
-/* Drag and Drop */
+
 .draggable {
     cursor: move;
 }
@@ -701,7 +701,7 @@ input:focus, select:focus, textarea:focus {
     background: #f0f9ff;
 }
 
-/* Rich Text Editor */
+
 .editor-toolbar {
     display: flex;
     gap: 10px;
@@ -738,7 +738,7 @@ input:focus, select:focus, textarea:focus {
     min-height: 200px;
 }
 
-/* File Upload */
+
 .file-upload {
     position: relative;
     overflow: hidden;
@@ -772,7 +772,7 @@ input:focus, select:focus, textarea:focus {
     color: #3b82f6;
 }
 
-/* Progress Bar */
+
 .progress-bar {
     height: 4px;
     background: #e2e8f0;
@@ -787,7 +787,7 @@ input:focus, select:focus, textarea:focus {
     transition: width 0.3s ease;
 }
 
-/* Tags Input */
+
 .tags-input {
     display: flex;
     flex-wrap: wrap;
@@ -824,7 +824,7 @@ input:focus, select:focus, textarea:focus {
     min-width: 60px;
 }
 
-/* Checkbox and Radio Styles */
+
 .custom-checkbox,
 .custom-radio {
     display: flex;
@@ -840,7 +840,7 @@ input:focus, select:focus, textarea:focus {
     margin: 0;
 }
 
-/* Toast Notifications */
+
 .toast-container {
     position: fixed;
     bottom: 20px;
@@ -872,7 +872,7 @@ input:focus, select:focus, textarea:focus {
     border-left: 4px solid #f59e0b;
 }
 
-/* Responsive Adjustments */
+
 @media (max-width: 640px) {
     .courses-table {
         display: block;
@@ -892,7 +892,7 @@ input:focus, select:focus, textarea:focus {
     }
 }
 
-/* Print Styles */
+
 @media print {
     .no-print {
         display: none;
