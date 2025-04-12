@@ -6,10 +6,11 @@
     <title>Browse Courses</title>
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/student/student-courses.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <%- include('../partials/navbar') %>
-    
+
     <div class="page-container">
         <div class="main-content">
             <div class="page-header">
@@ -19,7 +20,7 @@
                     <button id="submit-schedule" class="btn primary-btn">Confirm Registration</button>
                 </div>
             </div>
-            
+
             <div class="course-filters-panel">
                 <h3>Filter Courses</h3>
                 <div class="filters-grid">
@@ -32,7 +33,7 @@
                             <% }) %>
                         </select>
                     </div>
-                    
+
                     <div class="filter-group">
                         <label for="level-filter">Course Level</label>
                         <select id="level-filter" class="filter-select">
@@ -44,7 +45,7 @@
                             <option value="500">500 Level</option>
                         </select>
                     </div>
-                    
+
                     <div class="filter-group">
                         <label for="day-filter">Day</label>
                         <select id="day-filter" class="filter-select">
@@ -56,7 +57,7 @@
                             <option value="4">Friday</option>
                         </select>
                     </div>
-                    
+
                     <div class="filter-group">
                         <label for="time-filter">Time</label>
                         <select id="time-filter" class="filter-select">
@@ -65,7 +66,7 @@
                             <option value="afternoon">Afternoon (12-17)</option>
                         </select>
                     </div>
-                    
+
                     <div class="filter-group availability-filter">
                         <label>Availability</label>
                         <div class="checkbox-wrapper">
@@ -73,19 +74,19 @@
                             <label for="seats-filter">Show only available courses</label>
                         </div>
                     </div>
-                    
+
                     <div class="filter-group search-filter">
                         <label for="search-filter">Search</label>
                         <input type="text" id="search-filter" placeholder="Search by name or code" class="search-input">
                     </div>
                 </div>
-                
+
                 <div class="filter-actions">
                     <button id="apply-filters" class="btn primary-btn">Apply Filters</button>
                     <button id="reset-filters" class="btn secondary-btn">Reset</button>
                 </div>
             </div>
-            
+
             <div class="course-cards-container">
                 <% if (courses.length === 0) { %>
                     <div class="no-courses">
@@ -96,7 +97,7 @@
                     <div class="course-results-header">
                         <h3>Available Courses <span class="course-count" id="course-count"><%= courses.length %></span></h3>
                     </div>
-                    
+
                     <div class="course-grid" id="course-list">
                         <% courses.forEach(course => { %>
                             <div class="course-card" data-course-id="<%= course._id %>">
@@ -104,29 +105,29 @@
                                     <h3 class="course-title"><%= course.name %></h3>
                                     <span class="course-code"><%= course.code %></span>
                                 </div>
-                                
+
                                 <div class="course-details">
                                     <div class="detail-item">
                                         <span class="detail-icon">🏢</span>
                                         <span class="course-department"><%= course.department %></span>
                                     </div>
-                                    
+
                                     <div class="detail-item">
                                         <span class="detail-icon">🕒</span>
-                                        <span><%= ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'][course.schedule.day] %>, 
+                                        <span><%= ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'][course.schedule.day] %>,
                                         <%= course.schedule.startTime %>:00 - <%= course.schedule.startTime + 1 %>:00</span>
                                     </div>
-                                    
+
                                     <div class="detail-item">
                                         <span class="detail-icon">📚</span>
                                         <span><%= course.creditHours %> Credits</span>
                                     </div>
-                                    
+
                                     <div class="detail-item">
                                         <span class="detail-icon">🪑</span>
                                         <span>Seats: <span class="seats-available"><%= course.seatsAvailable %></span> / <%= course.totalSeats %></span>
                                     </div>
-                                    
+
                                     <% if (course.prerequisites && course.prerequisites.length > 0) { %>
                                         <div class="detail-item prerequisites-indicator">
                                             <span class="detail-icon">⚠️</span>
@@ -134,13 +135,18 @@
                                         </div>
                                     <% } %>
                                 </div>
-                                
+
                                 <div class="course-actions">
                                     <button type="button" class="info-btn" data-course-id="<%= course._id %>">View Details</button>
                                     <button type="button" class="add-temp-btn" data-course-id="<%= course._id %>"
                                             <%= course.seatsAvailable === 0 ? 'disabled' : '' %>>
                                         <%= course.seatsAvailable === 0 ? 'Full' : 'Add to Schedule' %>
                                     </button>
+                                    <% if (course.seatsAvailable === 0) { %>
+                                        <button type="button" class="subscribe-btn" data-course-id="<%= course._id %>">
+                                            <i class="fas fa-bell"></i> Subscribe
+                                        </button>
+                                    <% } %>
                                 </div>
                             </div>
                         <% }) %>
@@ -148,32 +154,32 @@
                 <% } %>
             </div>
         </div>
-        
+
         <div class="side-panel" id="side-panel">
             <div class="temp-schedule-panel">
                 <div class="panel-header">
                     <h3>Selected Courses</h3>
                     <button id="clear-temp" class="btn text-btn">Clear All</button>
                 </div>
-                
+
                 <ul id="temp-schedule-list" class="temp-schedule-list">
                     <li class="empty-message">No courses selected</li>
                 </ul>
             </div>
-            
+
             <div class="course-details-panel" id="course-details-panel">
                 <div class="panel-header">
                     <h3>Course Details</h3>
                     <button class="close-details-btn" id="close-details">×</button>
                 </div>
-                
+
                 <div id="prerequisites-info" class="prerequisites-info">
                     <p>Select a course to view its details and prerequisites</p>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- Modal for conflicts and confirmations -->
     <div id="modal-container" class="modal-container">
         <div class="modal">
@@ -190,7 +196,8 @@
             </div>
         </div>
     </div>
-    
+
     <script src="/js/student/student-courses.js"></script>
+    <script src="/js/student/notifications.js"></script>
 </body>
 </html>

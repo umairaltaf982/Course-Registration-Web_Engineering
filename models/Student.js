@@ -30,7 +30,15 @@ const StudentSchema = new mongoose.Schema({
     completedCourses: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course'
-    }]
+    }],
+    subscriptions: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Subscription'
+    }],
+    hasUnreadNotifications: {
+        type: Boolean,
+        default: false
+    }
 });
 
 module.exports = mongoose.model('Student', StudentSchema);

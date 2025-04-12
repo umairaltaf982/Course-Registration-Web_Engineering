@@ -6,13 +6,14 @@
     <title>Student Dashboard</title>
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/student/student-dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <%- include('../partials/navbar') %>
-    
+
     <div class="dashboard-container">
         <h1>Dashboard</h1>
-        
+
         <div class="dashboard-stats">
             <div class="stat-card">
                 <div class="stat-icon">📚</div>
@@ -21,7 +22,7 @@
                     <p><%= student.courses.length %></p>
                 </div>
             </div>
-            
+
             <div class="stat-card">
                 <div class="stat-icon">🎓</div>
                 <div class="stat-content">
@@ -29,7 +30,7 @@
                     <p><%= student.completedCourses.length %></p>
                 </div>
             </div>
-            
+
             <div class="stat-card">
                 <div class="stat-icon">📊</div>
                 <div class="stat-content">
@@ -37,7 +38,7 @@
                     <p><%= student.semester %></p>
                 </div>
             </div>
-            
+
             <div class="stat-card">
                 <div class="stat-icon">🏫</div>
                 <div class="stat-content">
@@ -46,7 +47,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="dashboard-sections">
             <div class="section">
                 <h2>Your Registered Courses</h2>
@@ -59,7 +60,7 @@
                                     <p><strong>Code:</strong> <%= course.code %></p>
                                     <p><strong>Department:</strong> <%= course.department %></p>
                                     <p><strong>Credit Hours:</strong> <%= course.creditHours %></p>
-                                    <p><strong>Schedule:</strong> <%= ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'][course.schedule.day] %>, 
+                                    <p><strong>Schedule:</strong> <%= ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'][course.schedule.day] %>,
                                     <%= course.schedule.startTime %>:00 - <%= course.schedule.startTime + 1 %>:00</p>
                                 </div>
                                 <a href="/student/schedule" class="view-btn">View in Schedule</a>
@@ -73,7 +74,7 @@
                     </div>
                 <% } %>
             </div>
-            
+
             <div class="section">
                 <h2>Completed Courses</h2>
                 <% if (student.completedCourses.length > 0) { %>
@@ -96,16 +97,16 @@
                 <% } %>
             </div>
         </div>
-        
+
         <div class="quick-actions">
             <a href="/student/courses" class="action-btn">Browse Available Courses</a>
             <a href="/student/schedule" class="action-btn">View Weekly Schedule</a>
         </div>
     </div>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-              
+
             const statCards = document.querySelectorAll('.stat-card');
             statCards.forEach((card, index) => {
                 setTimeout(() => {

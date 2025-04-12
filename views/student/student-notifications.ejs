@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/student/student-notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+    
+    <div class="page-container">
+        <div class="main-content">
+            <div class="page-header">
+                <h1>Your Notifications</h1>
+            </div>
+            
+            <div class="notifications-container">
+                <% if (subscriptions.length === 0) { %>
+                    <div class="no-notifications">
+                        <i class="fas fa-bell-slash"></i>
+                        <h3>No Notifications</h3>
+                        <p>You don't have any course subscriptions yet. Subscribe to courses to get notified when seats become available.</p>
+                        <a href="/student/courses" class="btn primary-btn">Browse Courses</a>
+                    </div>
+                <% } else { %>
+                    <div class="notifications-list">
+                        <h3>Course Subscriptions</h3>
+                        <p class="subtitle">You'll be notified when seats become available in these courses.</p>
+                        
+                        <div class="subscription-cards">
+                            <% subscriptions.forEach(subscription => { %>
+                                <div class="subscription-card">
+                                    <div class="subscription-header">
+                                        <h4><%= subscription.course.name %></h4>
+                                        <span class="course-code"><%= subscription.course.code %></span>
+                                    </div>
+                                    
+                                    <div class="subscription-details">
+                                        <div class="detail-item">
+                                            <span class="detail-icon"><i class="fas fa-university"></i></span>
+                                            <span><%= subscription.course.department %></span>
+                                        </div>
+                                        
+                                        <div class="detail-item">
+                                            <span class="detail-icon"><i class="fas fa-clock"></i></span>
+                                            <span><%= ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'][subscription.course.schedule.day] %>, 
+                                            <%= subscription.course.schedule.startTime %>:00 - <%= subscription.course.schedule.startTime + 1 %>:00</span>
+                                        </div>
+                                        
+                                        <div class="detail-item">
+                                            <span class="detail-icon"><i class="fas fa-chair"></i></span>
+                                            <span>Seats: <%= subscription.course.seatsAvailable %> / <%= subscription.course.totalSeats %></span>
+                                        </div>
+                                        
+                                        <div class="detail-item">
+                                            <span class="detail-icon"><i class="fas fa-calendar-alt"></i></span>
+                                            <span>Subscribed on: <%= new Date(subscription.createdAt).toLocaleDateString() %></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="subscription-actions">
+                                        <button class="btn secondary-btn unsubscribe-btn" data-subscription-id="<%= subscription._id %>">
+                                            <i class="fas fa-bell-slash"></i> Unsubscribe
+                                        </button>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/js/student/notifications.js"></script>
+</body>
+</html>

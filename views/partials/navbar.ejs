@@ -2,18 +2,26 @@
     <div class="nav-brand">
         <a href="/">Course Registration System</a>
     </div>
-    
+
     <% if (user && user.role === 'student') { %>
         <ul class="nav-links">
             <li><a href="/student/dashboard">Dashboard</a></li>
             <li><a href="/student/courses">Browse Courses</a></li>
             <li><a href="/student/schedule">My Schedule</a></li>
+            <li class="notification-icon">
+                <a href="/student/notifications" class="notification-link">
+                    <i class="fas fa-bell"></i>
+                    <% if (user.hasUnreadNotifications) { %>
+                        <span class="notification-badge"></span>
+                    <% } %>
+                </a>
+            </li>
             <li class="user-info">
                 Welcome, <%= user.name %> (<%= user.rollNumber %>)
                 <a href="/auth/logout" class="logout-btn">Logout</a>
             </li>
         </ul>
-    
+
     <% } else { %>
         <ul class="nav-links">
             <li><a href="/auth/student-login">Student Login</a></li>

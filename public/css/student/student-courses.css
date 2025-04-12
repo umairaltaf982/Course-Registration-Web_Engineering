@@ -1,4 +1,4 @@
- 
+
 body {
     font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
     margin: 0;
@@ -18,7 +18,7 @@ body {
 
 .main-content {
     flex: 1;
-    min-width: 0;  
+    min-width: 0;
 }
 
 .side-panel {
@@ -28,7 +28,7 @@ body {
     align-self: flex-start;
 }
 
- 
+
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -49,7 +49,7 @@ body {
     gap: 12px;
 }
 
- 
+
 .btn {
     cursor: pointer;
     border: none;
@@ -103,7 +103,7 @@ body {
     box-shadow: none !important;
 }
 
- 
+
 .course-filters-panel {
     background: white;
     padding: 20px;
@@ -185,7 +185,7 @@ body {
     margin-top: 20px;
 }
 
- 
+
 .course-results-header {
     display: flex;
     justify-content: space-between;
@@ -268,7 +268,7 @@ body {
     margin-top: 8px;
 }
 
- 
+
 
 .prerequisites-section {
     background-color: #fff8e8;
@@ -344,7 +344,33 @@ body {
     transform: none;
 }
 
- 
+.subscribe-btn {
+    background-color: #f59e0b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.subscribe-btn:hover {
+    background-color: #d97706;
+    transform: translateY(-2px);
+}
+
+.subscribe-btn i {
+    font-size: 12px;
+}
+
+
 .temp-schedule-panel,
 .course-details-panel {
     background: white;
@@ -438,7 +464,7 @@ body {
     margin: 10px 0;
 }
 
- 
+
 .modal-container {
     position: fixed;
     top: 0;
@@ -510,12 +536,12 @@ body {
     gap: 10px;
 }
 
- 
+
 @media (max-width: 1100px) {
     .page-container {
         flex-direction: column;
     }
-    
+
     .side-panel {
         width: 100%;
         position: static;
@@ -528,21 +554,21 @@ body {
         align-items: flex-start;
         gap: 15px;
     }
-    
+
     .filters-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .course-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .course-actions {
         flex-direction: column;
     }
 }
 
- 
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
