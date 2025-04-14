@@ -1,6 +1,42 @@
 const Admin = require('../models/Admin');
 const Course = require('../models/Course');
 const Student = require('../models/Student');
+const bcrypt = require('bcryptjs');
+
+exports.getAllAdmins = async (req, res) => {
+    try {
+        const admins = await Admin.find().select('-password');
+        res.json(admins);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
+exports.registerAdmin = async (req, res) => {
+    try {
+        const { username, password, name, email } = req.body;
+
+        let admin = await Admin.findOne({ username });
+
+        if (admin) {
+            return res.status(400).json({ message: 'Admin already exists' });
+        }
+
+        admin = new Admin({
+            username,
+            password,
+            name,
+            email
+        });
+        await admin.save();
+
+        res.status(201).json({ message: 'Admin created successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
 
 exports.loginAdmin = async (req, res) => {
     const { username, password } = req.body;
@@ -14,27 +50,6 @@ exports.loginAdmin = async (req, res) => {
         res.status(500).json({ message: 'Server error', error });
     }
 };
-
-
-  
-  
-  
-  
-  
-  
-  
-
-  
-  
-  
-  
-  
-
-  
-  
-  
-  
-  
 
 exports.addCourse = async (req, res) => {
     const { name, code, seatsAvailable, prerequisites } = req.body;
